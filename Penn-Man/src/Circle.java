@@ -29,6 +29,5 @@ public class Circle extends GameObj {
     public void draw(Graphics g) {
         g.setColor(this.color);
         g.fillOval(this.getPx(), this.getPy(), this.getWidth(), this.getHeight());
-        System.out.println("simple test for git change"); 
     }
 }
