@@ -18,13 +18,14 @@ public class Game implements Runnable {
 
         // Top-level frame in which game components live
         // Be sure to change "TOP LEVEL FRAME" to the name of your game
-        final JFrame frame = new JFrame("TOP LEVEL FRAME");
-        frame.setLocation(300, 300);
+        final JFrame frame = new JFrame("PENN-MAN");
+        frame.setLocation(500, 200);
+        
 
         // Status panel
         final JPanel status_panel = new JPanel();
         frame.add(status_panel, BorderLayout.SOUTH);
-        final JLabel status = new JLabel("Running...");
+        final JLabel status = new JLabel("Penn-Man");
         status_panel.add(status);
 
         // Main playing area
@@ -32,21 +33,22 @@ public class Game implements Runnable {
         frame.add(court, BorderLayout.CENTER);
 
         // Reset button
-        final JPanel control_panel = new JPanel();
-        frame.add(control_panel, BorderLayout.NORTH);
+        //final JPanel control_panel = new JPanel();
+        //frame.add(control_panel, BorderLayout.NORTH);
 
         // Note here that when we add an action listener to the reset button, we define it as an
         // anonymous inner class that is an instance of ActionListener with its actionPerformed()
         // method overridden. When the button is pressed, actionPerformed() will be called.
-        final JButton reset = new JButton("Reset");
+       /* final JButton reset = new JButton("Reset");
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 court.reset();
             }
         });
-        control_panel.add(reset);
+        control_panel.add(reset);*/ 
 
         // Put the frame on the screen
+        frame.getContentPane().setBackground(Color.BLUE);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
