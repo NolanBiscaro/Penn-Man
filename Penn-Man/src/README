@@ -1,0 +1,17 @@
+The following is a rough outline for the project:
+
+1. Draw maze:
+	The method for drawing the maze will be as follows:
+	-Define a tile size that produces a 16x16 grid for the current canvas size (512x512 canvas gives 32x32 pixel tile). 
+	-Fill the 2d array with either 0s or 1s. 0 = barrier, 1 = p-set (collectable). Othe numbers will later 
+	represent special tokens like power ups etc. 
+	Want to create multiple configurations or a way to randomize the config. can use for different levels
+	We will then be able to traverse through the array and determine where to stop / where to increment the points when 
+	p-set is collected. (sort of serves as a track for Penn-Man to follow)
+2. We will then have to define the various objects, TA's, Penn-Man, Prof, and there corresponding movement speeds and
+	abilties
+	2.1 We will need to simulate the objects movement in a realistic way. Cna create difficulty levels for oponnents
+3. Create persistence for pause game or storing user scores
+4. Create main menu
+5. Refractor code
+

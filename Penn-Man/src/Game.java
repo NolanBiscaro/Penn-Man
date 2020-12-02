@@ -19,8 +19,9 @@ public class Game implements Runnable {
         // Top-level frame in which game components live
         // Be sure to change "TOP LEVEL FRAME" to the name of your game
         final JFrame frame = new JFrame("PENN-MAN");
-        frame.setLocation(500, 200);
-        
+       
+        frame.setLocation(500, 100);
+        frame.setResizable(false); 
 
         // Status panel
         final JPanel status_panel = new JPanel();
@@ -48,7 +49,6 @@ public class Game implements Runnable {
         control_panel.add(reset);*/ 
 
         // Put the frame on the screen
-        frame.getContentPane().setBackground(Color.BLUE);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
