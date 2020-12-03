@@ -38,6 +38,10 @@ public abstract class GameObj {
      */
     private int maxX;
     private int maxY;
+    
+    //Maze data to navigate object
+    private static final int[][] maze = GameCourt.maze; 
+    private static final int TILE_SIZE = GameCourt.TILE_SIZE; 
 
     /**
      * Constructor
@@ -111,6 +115,26 @@ public abstract class GameObj {
         this.px = Math.min(Math.max(this.px, 0), this.maxX);
         this.py = Math.min(Math.max(this.py, 0), this.maxY);
     }
+    /**
+     * *Prevents the object from crossing the boundaries formed by the maze (restricts it to the halls). 
+     */
+    private void restrict () {
+        int[] coords = translate(); 
+        int pos_x = coords[0]; 
+        int pos_y = coords[1]; 
+        while (maze[pos_y][pos_x] == 1) {
+            this.setVx(0);
+        }
+        
+    }
+    
+    //translates pixel coordinates into tile coordinates
+    private int[] translate () {
+        int pos_x = (int) Math.ceil((this.px / TILE_SIZE)); 
+        int pos_y = (int) Math.ceil((this.py / TILE_SIZE)); 
+        int[] coords = {pos_x, pos_y}; 
+        return coords; 
+    }
 
     /**
      * Moves the object by its velocity.  Ensures that the object does not go outside its bounds by
@@ -121,6 +145,7 @@ public abstract class GameObj {
         this.py += this.vy;
 
         clip();
+        restrict(); 
     }
 
     /**

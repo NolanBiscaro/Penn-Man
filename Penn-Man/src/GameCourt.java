@@ -22,24 +22,18 @@ import javax.swing.*;
 public class GameCourt extends JPanel {
 
     // the state of the game logic
-    public int[][] maze =    {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                {1,0,1,0,1,1,1,1,1,1,1,0,1,0,1,0},
-                                {1,0,1,0,0,0,0,0,0,0,1,0,1,0,1,0},
-                                {1,0,1,0,1,1,1,1,1,0,0,0,1,0,1,0},
-                                {1,0,1,0,1,0,0,0,0,0,1,0,1,0,1,0},
-                                {1,0,1,0,1,0,0,0,0,0,1,0,0,0,1,0},
-                                {1,0,0,0,1,0,0,0,0,0,1,0,1,0,1,0},
-                                {1,0,1,0,1,1,1,0,1,1,1,0,1,0,1,0},
-                                {1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0},
-                                {1,0,1,1,1,1,1,1,1,0,1,1,1,0,1,0},
-                                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},
-                                {0,1,1,1,1,0,1,1,1,1,1,1,0,1,1,0},
-                                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                {1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0},
-                                {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                                {1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
-                                }; 
-     
+    private Man pennMan = new Man(COURT_WIDTH, COURT_HEIGHT); 
+    
+    
+    public static final int[][] maze = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0 }, { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
+            { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, };
 
     private boolean playing = false; // whether the game is running
     private JLabel status; // Current status text, i.e. "Running..."
@@ -47,8 +41,9 @@ public class GameCourt extends JPanel {
     // Game constants
     public static final int COURT_WIDTH = 512;
     public static final int COURT_HEIGHT = 512;
-    public static final int TILE_SIZE = 32;
-    ;
+    public static final int TILE_SIZE = 32;;
+    
+    private static final int PENNMAN_X_VEL = 4; 
 
     // Update interval for timer, in milliseconds
     public static final int INTERVAL = 35;
@@ -85,19 +80,25 @@ public class GameCourt extends JPanel {
         addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    //
+                    pennMan.setVy(0);
+                    pennMan.setVx(-PENNMAN_X_VEL);
+                    
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    //
+                    pennMan.setVy(0);
+                    pennMan.setVx(PENNMAN_X_VEL);
+                    
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    // square.setVy(SQUARE_VELOCITY);
+                    pennMan.setVy(PENNMAN_X_VEL);
+                    pennMan.setVx(0);
                 } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    // square.setVy(-SQUARE_VELOCITY);
+                    pennMan.setVy(-PENNMAN_X_VEL);
+                    pennMan.setVx(0);
                 }
             }
 
             public void keyReleased(KeyEvent e) {
-                // square.setVx(0);
-                // square.setVy(0);
+                // pennMan.setVx(0);
+                // pennMan.setVy(0);
             }
         });
 
@@ -128,6 +129,7 @@ public class GameCourt extends JPanel {
             // advance the square and snitch in their current direction.
             // square.move();
             // snitch.move();
+            pennMan.move();
 
             // make the snitch bounce off walls...
             // snitch.bounce(snitch.hitWall());
@@ -151,25 +153,34 @@ public class GameCourt extends JPanel {
         super.paintComponent(g);
         // square.draw(g);
         // poison.draw(g);
-        // snitch.draw(g);
-        drawMaze(g); 
+        // snitch.draw(g);       
+        drawMaze(g);
+        pennMan.draw(g);
+        
     }
-    
+
     private void drawMaze(Graphics g) {
-        int mid = TILE_SIZE / 2;
-        for (int y = 0; y < COURT_HEIGHT; y+=TILE_SIZE) {
-            for (int x = 0; x < COURT_WIDTH; x+=TILE_SIZE) {
-                if (maze[y / TILE_SIZE][x  / TILE_SIZE] == 0) {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-                    g.setColor(Color.WHITE);
-                    g.fillRect(x + mid, y + mid, 5, 5);
+        for (int y = 0; y < COURT_HEIGHT; y += TILE_SIZE) {
+            for (int x = 0; x < COURT_WIDTH; x += TILE_SIZE) {
+                if (maze[y / TILE_SIZE][x / TILE_SIZE] == 0) {
+                    drawWall(x, y, g);
                 } else {
-                    g.setColor(Color.BLUE);
-                    g.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+                    drawPSet(x, y, g);
                 }
             }
         }
+    }
+
+    private static void drawWall(int x, int y, Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+        g.setColor(Color.WHITE);
+        g.fillRect(x + (TILE_SIZE / 2), y + (TILE_SIZE / 2), 5, 5);
+    }
+
+    private static void drawPSet(int x, int y, Graphics g) {
+        g.setColor(Color.BLUE);
+        g.fillRect(x, y, TILE_SIZE, TILE_SIZE);
     }
 
     @Override
@@ -177,66 +188,31 @@ public class GameCourt extends JPanel {
         return new Dimension(COURT_WIDTH, COURT_HEIGHT);
     }
 
-    
     /*
-
-    public void drawCenterBlock(Graphics g) {
-        int mid_w = COURT_WIDTH / 2; 
-        int mid_h = COURT_HEIGHT / 2;
-        
-        int rm_w = COURT_WIDTH / 4; 
-        int rm_h = COURT_HEIGHT / 20; 
-        
-        int hall_w = 70; 
-        int post_w = COURT_WIDTH / 24;
-        int post_h = COURT_HEIGHT / 5; 
-       
-        g.setColor(Color.blue);
-        
-        //draw center block
-        g.fillRect(mid_w - (rm_w / 2), mid_h, rm_w, rm_h); //middle
-        g.fillRect(mid_w - (rm_w / 2), mid_h, post_w, post_h); //left
-        g.fillRect(mid_w + (rm_w / 2) - post_w, mid_h, post_w, post_h); //right
-        
-        //draw inner L-Brackets
-        
-        //left
-        g.fillRect(mid_w - (rm_w / 2) - hall_w, mid_h - hall_w, post_w, post_h + 2*hall_w); 
-        g.fillRect(mid_w - (rm_w / 2) - hall_w, mid_h - hall_w, 2*post_h - hall_w, post_w);
-        //right
-        g.fillRect(mid_w + (rm_w / 2) - post_w + hall_w, mid_h - hall_w, post_w, post_h + 2*hall_w);
-        g.fillRect(mid_w - (rm_w / 2) + hall_w, mid_h + post_h - post_w + hall_w, 2*post_h - hall_w, post_w);
-        //outer left
-        g.fillRect(mid_w - (rm_w / 2) - 2*hall_w, mid_h - 2 * hall_w, post_w, post_h + 4*hall_w); 
-        g.fillRect(mid_w - (rm_w / 2) - 2*hall_w, mid_h - 2*hall_w, 2*post_h - hall_w, post_w);
-        */
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
+     * 
+     * public void drawCenterBlock(Graphics g) { int mid_w = COURT_WIDTH / 2; int
+     * mid_h = COURT_HEIGHT / 2;
+     * 
+     * int rm_w = COURT_WIDTH / 4; int rm_h = COURT_HEIGHT / 20;
+     * 
+     * int hall_w = 70; int post_w = COURT_WIDTH / 24; int post_h = COURT_HEIGHT /
+     * 5;
+     * 
+     * g.setColor(Color.blue);
+     * 
+     * //draw center block g.fillRect(mid_w - (rm_w / 2), mid_h, rm_w, rm_h);
+     * //middle g.fillRect(mid_w - (rm_w / 2), mid_h, post_w, post_h); //left
+     * g.fillRect(mid_w + (rm_w / 2) - post_w, mid_h, post_w, post_h); //right
+     * 
+     * //draw inner L-Brackets
+     * 
+     * //left g.fillRect(mid_w - (rm_w / 2) - hall_w, mid_h - hall_w, post_w, post_h
+     * + 2*hall_w); g.fillRect(mid_w - (rm_w / 2) - hall_w, mid_h - hall_w, 2*post_h
+     * - hall_w, post_w); //right g.fillRect(mid_w + (rm_w / 2) - post_w + hall_w,
+     * mid_h - hall_w, post_w, post_h + 2*hall_w); g.fillRect(mid_w - (rm_w / 2) +
+     * hall_w, mid_h + post_h - post_w + hall_w, 2*post_h - hall_w, post_w); //outer
+     * left g.fillRect(mid_w - (rm_w / 2) - 2*hall_w, mid_h - 2 * hall_w, post_w,
+     * post_h + 4*hall_w); g.fillRect(mid_w - (rm_w / 2) - 2*hall_w, mid_h -
+     * 2*hall_w, 2*post_h - hall_w, post_w);
+     */
+}
