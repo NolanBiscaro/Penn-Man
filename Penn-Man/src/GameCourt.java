@@ -158,7 +158,7 @@ public class GameCourt extends JPanel {
         pennMan.draw(g);
         
     }
-
+/*
     private void drawMaze(Graphics g) {
         for (int y = 0; y < COURT_HEIGHT; y += TILE_SIZE) {
             for (int x = 0; x < COURT_WIDTH; x += TILE_SIZE) {
@@ -167,6 +167,20 @@ public class GameCourt extends JPanel {
                 } else {
                     drawPSet(x, y, g);
                 }
+            }
+        }
+    }*/ 
+    private void drawMaze(Graphics g) {
+        for (int i = 0; i < COURT_HEIGHT; i+= TILE_SIZE) {
+            for (int j = 0; j < COURT_WIDTH; j+= TILE_SIZE) {
+                if (maze[i / TILE_SIZE][j / TILE_SIZE] == 0) {
+                    g.setColor(Color.green);
+                    g.drawLine(j, i, j, i + TILE_SIZE);
+                } else {
+                    g.setColor(Color.red);
+                    g.drawLine(j, i, j, i + TILE_SIZE);
+                }
+                
             }
         }
     }
