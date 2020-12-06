@@ -167,7 +167,7 @@ public abstract class GameObj {
         }
     }
 
-    // translates pixel coordinates into tile coordinates
+    // translates pixel coordinates into tile coordinate
     private int[] translate() {
         int pos_x = (int) Math.ceil((this.px / TILE_SIZE));
         int pos_y = (int) Math.ceil((this.py / TILE_SIZE));

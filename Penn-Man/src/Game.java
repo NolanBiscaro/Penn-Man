@@ -17,7 +17,7 @@ public class Game implements Runnable {
         // NOTE : recall that the 'final' keyword notes immutability even for local variables.
 
         // Top-level frame in which game components live
-        // Be sure to change "TOP LEVEL FRAME" to the name of your game
+        // Be sure to change "TOP LEVEL FRAME" to the name of your gam
         final JFrame frame = new JFrame("PENN-MAN");
        
         frame.setLocation(500, 100);

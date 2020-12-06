@@ -23,7 +23,7 @@ public class Man extends GameObj {
     public void draw(Graphics g) {
         Image icon = loadImage();
         g.drawImage(icon, this.getPx(), this.getPy(), this.getWidth(), this.getHeight(), null, null); 
-        //g.drawRect(this.getPx(), this.getPy(), this.getWidth(), this.getHeight());
+        //g.drawRect(this.getPx(), this.getPy(), this.getWidth(), this.getHeight())
         
     }
 

@@ -136,7 +136,7 @@ public class GameCourt extends JPanel {
             // ...and the mushroom
             // snitch.bounce(snitch.hitObj(poison));
 
-            // check for the game end conditions
+          
             /*
              * if (square.intersects(poison)) { playing = false;
              * status.setText("You lose!"); } else if (square.intersects(snitch)) { playing
