@@ -5,8 +5,9 @@
  * @version 2.1, Apr 2017
  */
 
-import java.awt.Color;
+
 import java.awt.Graphics;
+
 
 /**
  * An object in the game.
@@ -146,7 +147,7 @@ public abstract class GameObj {
 			return;
 		}
 
-		if (collision(x1, y1, x2, y2)) {
+		if (collision(x1, y1, x2, y2, 1)) { //1 is target because looking for walls
 			switch (d) {
 			case UP:
 				GameCourt.upLock = true;
@@ -198,11 +199,11 @@ public abstract class GameObj {
 		return coords;
 	}
 
-	private boolean collision(int x1, int y1, int x2, int y2) {
-		return maze[y1][x1] == 1 
-				|| maze[y2][x2] == 1 
-				|| maze[y2][x1] == 1 
-				|| maze[y1][x2] == 1;
+	protected boolean collision(int x1, int y1, int x2, int y2, int target) {
+		return maze[y1][x1] == target 
+				|| maze[y2][x2] == target 
+				|| maze[y2][x1] == target
+				|| maze[y1][x2] == target;
 	}
 	
 	
@@ -214,7 +215,6 @@ public abstract class GameObj {
 	public void move() {
 		this.px += this.vx;
 		this.py += this.vy;
-
 		clip();
 		restrict(this.getDirection());
 	}
@@ -351,7 +351,6 @@ public abstract class GameObj {
 			return null;
 		}
 	}
-
 	/**
 	 * Default draw method that provides how the object should be drawn in the GUI.
 	 * This method does not draw anything. Subclass should override this method

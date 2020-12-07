@@ -2,7 +2,7 @@ The following is a rough outline for the project:
 
 1. Draw maze:
 	The method for drawing the maze will be as follows:
-	-Define a tile size that produces a 16x16 grid for the current canvas size (512x512 canvas gives 32x32 pixel tile). 
+	-Define a tile ize that produsces a 16x16 grid for the current canvas size (512x512 canvas gives 32x32 pixel tile). 
 	-Fill the 2d array with either 0s or 1s. 0 = barrier, 1 = p-set (collectable). Othe numbers will later 
 	represent special tokens like power ups etc. 
 	Want to create multiple configurations or a way to randomize the config. can use for different levels

@@ -47,7 +47,7 @@ public class GameCourt extends JPanel {
 	public static final int COURT_HEIGHT = 512;
 	public static final int TILE_SIZE = 32;
 
-	private static final int PENNMAN_X_VEL = 4;
+	private static final int PENNMAN_X_VEL = 3;
 
 	// Update interval for timer, in milliseconds
 	public static final int INTERVAL = 35;
@@ -137,8 +137,7 @@ public class GameCourt extends JPanel {
 			// advance the square and snitch in their current direction.
 			// square.move();
 			// snitch.move();
-			pennMan.move();
-
+			pennMan.move(); 
 			// make the snitch bounce off walls...
 			// snitch.bounce(snitch.hitWall());
 			// ...and the mushroom
@@ -161,9 +160,9 @@ public class GameCourt extends JPanel {
 		// square.draw(g);
 		// poison.draw(g);
 		// snitch.draw(g);
+		pennMan.takePSet(); 
 		drawMaze(g);
 		pennMan.draw(g);
-		pennMan.takePSet(g); 
 
 	}
 
@@ -181,8 +180,11 @@ public class GameCourt extends JPanel {
 					g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
 					g.setColor(Color.WHITE);
 					g.fillOval(j + (TILE_SIZE / 2), i + (TILE_SIZE / 2), 3, 3);
-				} else {
+				} else if (maze[i / TILE_SIZE][j / TILE_SIZE] == 1){
 					g.setColor(Color.BLUE);
+					g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
+				} else {
+					g.setColor(Color.black);
 					g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
 				}
 
