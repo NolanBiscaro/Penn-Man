@@ -34,14 +34,25 @@ public class Game implements Runnable {
         frame.add(court, BorderLayout.CENTER);
         
 
-        // Reset button
-        //final JPanel control_panel = new JPanel();
-        //frame.add(control_panel, BorderLayout.NORTH);
+        //Scoreboard
+        final JPanel scoreboard = new JPanel();
+        scoreboard.setBackground(Color.BLACK);
+        scoreboard.setBorder((BorderFactory.createLineBorder(Color.RED)));
+        scoreboard.setLayout(new FlowLayout());
+        
+        //score
+        JLabel score = new JLabel("HEY", JLabel.LEFT); 
+        scoreboard.add(score);
+        
+        scoreboard.setPreferredSize(new Dimension(50, 70));
+        
+        
+        frame.add(scoreboard, BorderLayout.NORTH);
 
         // Note here that when we add an action listener to the reset button, we define it as an
         // anonymous inner class that is an instance of ActionListener with its actionPerformed()
         // method overridden. When the button is pressed, actionPerformed() will be called.
-       /* final JButton reset = new JButton("Reset");
+        /*final JButton reset = new JButton("Reset");
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 court.reset();

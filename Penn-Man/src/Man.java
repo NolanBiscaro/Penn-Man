@@ -41,7 +41,8 @@ public class Man extends GameObj {
 	Clip audioClip = initSoundFile(chomp);
 	AudioInputStream stream = initStream(chomp);
 
-	public int p_sets = 0;
+	public static int score = 0;
+	
 	private int[][] maze = GameCourt.maze;
 
 	public Man(int courtWidth, int courtHeight) {
@@ -78,6 +79,7 @@ public class Man extends GameObj {
 
 		if (maze[c_y][c_x] == 0) {
 			maze[c_y][c_x] = -1;
+			score += 1; 
 			icon = close; 
 			audioClip.setFramePosition(11000);
 			audioClip.start();

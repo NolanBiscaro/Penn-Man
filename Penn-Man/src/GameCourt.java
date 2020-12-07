@@ -47,14 +47,14 @@ public class GameCourt extends JPanel {
 	public static final int COURT_HEIGHT = 512;
 	public static final int TILE_SIZE = 32;
 
-	private static final int PENNMAN_X_VEL = 3;
+	private static final int PENNMAN_VEL = 3;
 
 	// Update interval for timer, in milliseconds
 	public static final int INTERVAL = 35;
 
 	public GameCourt(JLabel status) {
 		// creates border around the court area, JComponent method
-		setBorder(BorderFactory.createLineBorder(Color.RED));
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setBackground(Color.BLACK);
 
 		// The timer is an object which triggers an action periodically with the given
@@ -85,20 +85,19 @@ public class GameCourt extends JPanel {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_LEFT && !(leftLock)) {
 					pennMan.setVy(0);
-					pennMan.setVx(-PENNMAN_X_VEL);
+					pennMan.setVx(-PENNMAN_VEL);
 
 				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT && !(rightLock)) {
 					pennMan.setVy(0);
-					pennMan.setVx(PENNMAN_X_VEL);
+					pennMan.setVx(PENNMAN_VEL);
 
 				} else if (e.getKeyCode() == KeyEvent.VK_DOWN && !(downLock)) {
-					pennMan.setVy(PENNMAN_X_VEL);
+					pennMan.setVy(PENNMAN_VEL);
 					pennMan.setVx(0);
 				} else if (e.getKeyCode() == KeyEvent.VK_UP && !(upLock)) {
-					pennMan.setVy(-PENNMAN_X_VEL);
+					pennMan.setVy(-PENNMAN_VEL);
 					pennMan.setVx(0);
 				}
-				// resetLocks();
 			}
 
 		});
