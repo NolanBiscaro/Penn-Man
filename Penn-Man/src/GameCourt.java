@@ -24,16 +24,30 @@ public class GameCourt extends JPanel {
     // the state of the game logic
     private Man pennMan = new Man(COURT_WIDTH, COURT_HEIGHT); 
     
+    public static boolean leftLock = false; 
+    public static boolean rightLock = false; 
+    public static boolean upLock = false; 
+    public static boolean downLock = false; 
     
-    public static final int[][] maze = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
-            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
-            { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0 }, { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
-            { 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
-            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
-            { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, };
+    
+    public static final int[][] maze = { 
+    		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0 }, 
+            { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0 }, 
+            { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0 }, 
+            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0 }, 
+            { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
+            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, 
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
+            { 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, 
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, 
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, 
+            };
 
     private boolean playing = false; // whether the game is running
     private JLabel status; // Current status text, i.e. "Running..."
@@ -41,7 +55,7 @@ public class GameCourt extends JPanel {
     // Game constants
     public static final int COURT_WIDTH = 512;
     public static final int COURT_HEIGHT = 512;
-    public static final int TILE_SIZE = 32;;
+    public static final int TILE_SIZE = 32;
     
     private static final int PENNMAN_X_VEL = 4; 
 
@@ -79,30 +93,35 @@ public class GameCourt extends JPanel {
         // square.)
         addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                if (e.getKeyCode() == KeyEvent.VK_LEFT && !(leftLock)) {
                     pennMan.setVy(0);
                     pennMan.setVx(-PENNMAN_X_VEL);
                     
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && !(rightLock)) {
                     pennMan.setVy(0);
                     pennMan.setVx(PENNMAN_X_VEL);
                     
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN && !(downLock)) {
                     pennMan.setVy(PENNMAN_X_VEL);
                     pennMan.setVx(0);
-                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                } else if (e.getKeyCode() == KeyEvent.VK_UP && !(upLock)) {
                     pennMan.setVy(-PENNMAN_X_VEL);
                     pennMan.setVx(0);
                 }
+                //resetLocks(); 
             }
 
-            public void keyReleased(KeyEvent e) {
-                // pennMan.setVx(0);
-                // pennMan.setVy(0);
-            }
+            
         });
 
         this.status = status;
+    }
+    
+    public static void resetLocks() {
+    	rightLock = false;
+    	leftLock = false; 
+    	upLock = false;
+    	downLock = false; 
     }
 
     /**
@@ -174,15 +193,25 @@ public class GameCourt extends JPanel {
         for (int i = 0; i < COURT_HEIGHT; i+= TILE_SIZE) {
             for (int j = 0; j < COURT_WIDTH; j+= TILE_SIZE) {
                 if (maze[i / TILE_SIZE][j / TILE_SIZE] == 0) {
+                    g.setColor(Color.BLACK);
+                    g.fillRect(j, i, TILE_SIZE, TILE_SIZE); 
                     g.setColor(Color.green);
-                    g.drawLine(j, i, j, i + TILE_SIZE);
+                    g.fillRect(j, i, 1, 1);
+                    g.setColor(Color.WHITE);
+                    g.fillOval(j + (TILE_SIZE / 2), i + (TILE_SIZE / 2), 3, 3);
                 } else {
+                    g.setColor(Color.BLUE);
+                    g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
                     g.setColor(Color.red);
-                    g.drawLine(j, i, j, i + TILE_SIZE);
+                    g.fillRect(j, i, 1, 1);
                 }
                 
             }
         }
+    }
+    
+    private static void centerPoints(int x, int y) {
+    	 
     }
 
     private static void drawWall(int x, int y, Graphics g) {

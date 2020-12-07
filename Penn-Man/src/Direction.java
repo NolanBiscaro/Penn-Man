@@ -12,5 +12,5 @@
  * input to the enum cases)
  */
 public enum Direction {
-    UP, DOWN, LEFT, RIGHT, STATIC;
+    UP, DOWN, LEFT, RIGHT;
 }

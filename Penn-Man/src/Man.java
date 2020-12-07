@@ -21,10 +21,10 @@ public class Man extends GameObj {
 
     @Override
     public void draw(Graphics g) {
+    	int x = this.getPx();
+    	int y = this.getPy(); 
         Image icon = loadImage();
         g.drawImage(icon, this.getPx(), this.getPy(), this.getWidth(), this.getHeight(), null, null); 
-        //g.drawRect(this.getPx(), this.getPy(), this.getWidth(), this.getHeight())
-        
     }
 
     private static Image loadImage() {

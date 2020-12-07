@@ -5,6 +5,7 @@
  * @version 2.1, Apr 2017
  */
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -15,320 +16,346 @@ import java.awt.Graphics;
  * always be within their bounds.
  */
 public abstract class GameObj {
-    /*
-     * Current position of the object (in terms of graphics coordinates)
-     * 
-     * Coordinates are given by the upper-left hand corner of the object. This
-     * position should always be within bounds. 0 <= px <= maxX 0 <= py <= maxY
-     */
-    private int px;
-    private int py;
+	/*
+	 * Current position of the object (in terms of graphics coordinates)
+	 * 
+	 * Coordinates are given by the upper-left hand corner of the object. This
+	 * position should always be within bounds. 0 <= px <= maxX 0 <= py <= maxY
+	 */
+	private int px;
+	private int py;
 
-    /* Size of object, in pixels. */
-    private int width;
-    private int height;
+	/* Size of object, in pixels. */
+	private int width;
+	private int height;
 
-    /* Velocity: number of pixels to move every time move() is called. */
-    private int vx;
-    private int vy;
+	/* Velocity: number of pixels to move every time move() is called. */
+	private int vx;
+	private int vy;
 
-    /*
-     * Upper bounds of the area in which the object can be positioned. Maximum
-     * permissible x, y positions for the upper-left hand corner of the object.
-     */
-    private int maxX;
-    private int maxY;
+	/*
+	 * Upper bounds of the area in which the object can be positioned. Maximum
+	 * permissible x, y positions for the upper-left hand corner of the object.
+	 */
+	private int maxX;
+	private int maxY;
 
-    // Maze data to navigate object
-    private static final int[][] maze = GameCourt.maze;
-    private static final int TILE_SIZE = GameCourt.TILE_SIZE;
+	// Maze data to navigate object
+	private static final int[][] maze = GameCourt.maze;
+	private static final int TILE_SIZE = GameCourt.TILE_SIZE;
 
-    /**
-     * Constructor
-     */
-    public GameObj(int vx, int vy, int px, int py, int width, int height, int courtWidth, int courtHeight) {
-        this.vx = vx;
-        this.vy = vy;
-        this.px = px;
-        this.py = py;
-        this.width = width;
-        this.height = height;
+	/**
+	 * Constructor
+	 */
+	public GameObj(int vx, int vy, int px, int py, int width, int height, int courtWidth, int courtHeight) {
+		this.vx = vx;
+		this.vy = vy;
+		this.px = px;
+		this.py = py;
+		this.width = width;
+		this.height = height;
 
-        // take the width and height into account when setting the bounds for the upper
-        // left corner
-        // of the object.
-        this.maxX = courtWidth - width;
-        this.maxY = courtHeight - height;
-    }
+		// take the width and height into account when setting the bounds for the upper
+		// left corner
+		// of the object.
+		this.maxX = courtWidth - width;
+		this.maxY = courtHeight - height;
+	}
 
-    /***
-     * GETTERS
-     **********************************************************************************/
-    public int getPx() {
-        return this.px;
-    }
+	/***
+	 * GETTERS
+	 **********************************************************************************/
+	public int getPx() {
+		return this.px;
+	}
 
-    public int getPy() {
-        return this.py;
-    }
+	public int getPy() {
+		return this.py;
+	}
 
-    public int getVx() {
-        return this.vx;
-    }
+	public int getVx() {
+		return this.vx;
+	}
 
-    public int getVy() {
-        return this.vy;
-    }
+	public int getVy() {
+		return this.vy;
+	}
 
-    public int getWidth() {
-        return this.width;
-    }
+	public int getWidth() {
+		return this.width;
+	}
 
-    public int getHeight() {
-        return this.height;
-    }
+	public int getHeight() {
+		return this.height;
+	}
 
-    /***
-     * SETTERS
-     **********************************************************************************/
-    public void setPx(int px) {
-        this.px = px;
-        clip();
-    }
+	/***
+	 * SETTERS
+	 **********************************************************************************/
+	public void setPx(int px) {
+		this.px = px;
+		clip();
+	}
 
-    public void setPy(int py) {
-        this.py = py;
-        clip();
-    }
+	public void setPy(int py) {
+		this.py = py;
+		clip();
+	}
 
-    public void setVx(int vx) {
-        this.vx = vx;
-    }
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
 
-    public void setVy(int vy) {
-        this.vy = vy;
-    }
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
 
-    /***
-     * UPDATES AND OTHER METHODS
-     ****************************************************************/
+	/***
+	 * UPDATES AND OTHER METHODS
+	 ****************************************************************/
 
-    /**
-     * Prevents the object from going outside of the bounds of the area designated
-     * for the object. (i.e. Object cannot go outside of the active area the user
-     * defines for it).
-     */
-    private void clip() {
-        this.px = Math.min(Math.max(this.px, 0), this.maxX);
-        this.py = Math.min(Math.max(this.py, 0), this.maxY);
-    }
+	/**
+	 * Prevents the object from going outside of the bounds of the area designated
+	 * for the object. (i.e. Object cannot go outside of the active area the user
+	 * defines for it).
+	 */
+	private void clip() {
+		this.px = Math.min(Math.max(this.px, 0), this.maxX);
+		this.py = Math.min(Math.max(this.py, 0), this.maxY);
+	}
 
-    /**
-     * *Prevents the object from crossing the boundaries formed by the maze
-     * (restricts it to the halls).
-     */
-    private void restrict(Direction d) {
-        int[] coords = translate(); 
-        int pos_x_left = coords[0]; 
-        int pos_y_top = coords[1]; 
-        int pos_x_right = pos_x_left + 1; 
-        int pos_y_bottom = pos_y_top + 1; 
-        if (d == null) {
-            return;
-        }
-        
-        
+	/**
+	 * *Prevents the object from crossing the boundaries formed by the maze
+	 * (restricts it to the halls).
+	 */
+	private void restrict(Direction d) {
+		int[] coords = translate();
 
-        switch (d) {
-        case UP:
-            if (maze[pos_y_bottom][pos_x_left] == 1) {
-                this.setVy(0);
-            }
-            break;
-        case DOWN:
-            if (maze[pos_y_top][pos_x_right] == 1) {
-               
-                this.setVy(0);
-            }
-            break;
-        case LEFT:
-            if (maze[pos_y_top][pos_x_left] == 1) {
-                this.setVx(0);
-            }
-            break;
-        case RIGHT:
-            if (maze[pos_y_top][pos_x_right] == 1) {
-                this.setVx(0);
-            }
-        case STATIC:           
-            break;
-        default:
-            break;
-        }
-    }
+		// top left
+		int x1 = coords[0];
+		int y1 = coords[1];
 
-    // translates pixel coordinates into tile coordinate
-    private int[] translate() {
-        int pos_x = (int) Math.ceil((this.px / TILE_SIZE));
-        int pos_y = (int) Math.ceil((this.py / TILE_SIZE));
-        int[] coords = { pos_x, pos_y };
-        return coords;
-    }
+		// bottom right
+		int x2 = coords[2];
+		int y2 = coords[3];
 
-    /**
-     * Moves the object by its velocity. Ensures that the object does not go outside
-     * its bounds by clipping.
-     */
-    public void move() {
-        this.px += this.vx;
-        this.py += this.vy;
+		if (d == null) {
+			return;
+		}
 
-        clip();
-        restrict(this.getDirection());
-    }
+		if (collision(x1, y1, x2, y2)) {
+			switch (d) {
+			case UP:
+				GameCourt.upLock = true;
+				this.py += 4;
+				this.setVy(0);
+				break;
 
-    /**
-     * Determine whether this game object is currently intersecting another object.
-     * 
-     * Intersection is determined by comparing bounding boxes. If the bounding boxes
-     * overlap, then an intersection is considered to occur.
-     * 
-     * @param that The other object
-     * @return Whether this object intersects the other object.
-     */
-    public boolean intersects(GameObj that) {
-        return (this.px + this.width >= that.px && this.py + this.height >= that.py && that.px + that.width >= this.px
-                && that.py + that.height >= this.py);
-    }
+			case DOWN:
+				GameCourt.downLock = true;
+				this.py -= 4;
+				this.setVy(0);
+				break;
 
-    /**
-     * Determine whether this game object will intersect another in the next time
-     * step, assuming that both objects continue with their current velocity.
-     * 
-     * Intersection is determined by comparing bounding boxes. If the bounding boxes
-     * (for the next time step) overlap, then an intersection is considered to
-     * occur.
-     * 
-     * @param that The other object
-     * @return Whether an intersection will occur.
-     */
-    public boolean willIntersect(GameObj that) {
-        int thisNextX = this.px + this.vx;
-        int thisNextY = this.py + this.vy;
-        int thatNextX = that.px + that.vx;
-        int thatNextY = that.py + that.vy;
+			case RIGHT:
+				GameCourt.rightLock = true;
+				this.px -= 4;
+				this.setVx(0);
+				break;
 
-        return (thisNextX + this.width >= thatNextX && thisNextY + this.height >= thatNextY
-                && thatNextX + that.width >= thisNextX && thatNextY + that.height >= thisNextY);
-    }
+			case LEFT:
+				GameCourt.leftLock = true;
+				this.px += 4;
+				this.setVx(0);
+				break;
 
-    /**
-     * Update the velocity of the object in response to hitting an obstacle in the
-     * given direction. If the direction is null, this method has no effect on the
-     * object.
-     *
-     * @param d The direction in which this object hit an obstacle
-     */
-    public void bounce(Direction d) {
-        if (d == null) {
-            return;
-        }
+			default:
+				break;
+			}
 
-        switch (d) {
-        case UP:
-            this.vy = Math.abs(this.vy);
-            break;
-        case DOWN:
-            this.vy = -Math.abs(this.vy);
-            break;
-        case LEFT:
-            this.vx = Math.abs(this.vx);
-            break;
-        case RIGHT:
-            this.vx = -Math.abs(this.vx);
-            break;
-        default:
-            break;
-        }
-    }
+		} else {
+			GameCourt.resetLocks();
+		}
 
-    /**
-     * Determine whether the game object will hit a wall in the next time step. If
-     * so, return the direction of the wall in relation to this game object.
-     * 
-     * @return Direction of impending wall, null if all clear.
-     */
-    public Direction hitWall() {
-        if (this.px + this.vx < 0) {
-            return Direction.LEFT;
-        } else if (this.px + this.vx > this.maxX) {
-            return Direction.RIGHT;
-        }
+	}
 
-        if (this.py + this.vy < 0) {
-            return Direction.UP;
-        } else if (this.py + this.vy > this.maxY) {
-            return Direction.DOWN;
-        } else {
-            return null;
-        }
-    }
-    
-    public Direction getDirection() {
-        if (this.vx < 0) {
-            return Direction.LEFT; 
-        } else if (vx > 0) {
-            return Direction.RIGHT; 
-        } else if (vy < 0) {
-            return Direction.DOWN; 
-        } else if (vy > 0) {
-            return Direction.UP; 
-        } 
-        return Direction.STATIC; //not moving
-    }
+	// translates pixel coordinates into tile coordinate
+	private int[] translate() {
 
-    /**
-     * Determine whether the game object will hit another object in the next time
-     * step. If so, return the direction of the other object in relation to this
-     * game object.
-     * 
-     * @param that The other object
-     * @return Direction of impending object, null if all clear.
-     */
-    public Direction hitObj(GameObj that) {
-        if (this.willIntersect(that)) {
-            double dx = that.px + that.width / 2 - (this.px + this.width / 2);
-            double dy = that.py + that.height / 2 - (this.py + this.height / 2);
+		int x1 = this.getPx();
+		int y1 = this.getPy();
 
-            double theta = Math.acos(dx / (Math.sqrt(dx * dx + dy * dy)));
-            double diagTheta = Math.atan2(this.height / 2, this.width / 2);
+		int x1_trans = (int) Math.ceil((x1 + 6) / 32);
+		int y1_trans = (int) Math.ceil((y1 + 6) / 32);
 
-            if (theta <= diagTheta) {
-                return Direction.RIGHT;
-            } else if (theta > diagTheta && theta <= Math.PI - diagTheta) {
-                // Coordinate system for GUIs is switched
-                if (dy > 0) {
-                    return Direction.DOWN;
-                } else {
-                    return Direction.UP;
-                }
-            } else {
-                return Direction.LEFT;
-            }
-        } else {
-            return null;
-        }
-    }
+		int x2_trans = (int) Math.ceil(x1 + 26) / 32;
+		int y2_trans = (int) Math.ceil(y1 + 26) / 32;
 
-    /**
-     * Default draw method that provides how the object should be drawn in the GUI.
-     * This method does not draw anything. Subclass should override this method
-     * based on how their object should appear.
-     * 
-     * @param g The <code>Graphics</code> context used for drawing the object.
-     *          Remember graphics contexts that we used in OCaml, it gives the
-     *          context in which the object should be drawn (a canvas, a frame,
-     *          etc.)
-     */
-    public abstract void draw(Graphics g);
+		int[] coords = { x1_trans, y1_trans, x2_trans, y2_trans };
+		return coords;
+	}
+
+	private boolean collision(int x1, int y1, int x2, int y2) {
+		return maze[y1][x1] == 1 
+				|| maze[y2][x2] == 1 
+				|| maze[y2][x1] == 1 
+				|| maze[y1][x2] == 1;
+	}
+
+	/**
+	 * Moves the object by its velocity. Ensures that the object does not go outside
+	 * its bounds by clipping.
+	 */
+	public void move() {
+		this.px += this.vx;
+		this.py += this.vy;
+
+		clip();
+		restrict(this.getDirection());
+	}
+
+	/**
+	 * Determine whether this game object is currently intersecting another object.
+	 * 
+	 * Intersection is determined by comparing bounding boxes. If the bounding boxes
+	 * overlap, then an intersection is considered to occur.
+	 * 
+	 * @param that The other object
+	 * @return Whether this object intersects the other object.
+	 */
+	public boolean intersects(GameObj that) {
+		return (this.px + this.width >= that.px && this.py + this.height >= that.py && that.px + that.width >= this.px
+				&& that.py + that.height >= this.py);
+	}
+
+	/**
+	 * Determine whether this game object will intersect another in the next time
+	 * step, assuming that both objects continue with their current velocity.
+	 * 
+	 * Intersection is determined by comparing bounding boxes. If the bounding boxes
+	 * (for the next time step) overlap, then an intersection is considered to
+	 * occur.
+	 * 
+	 * @param that The other object
+	 * @return Whether an intersection will occur.
+	 */
+	public boolean willIntersect(GameObj that) {
+		int thisNextX = this.px + this.vx;
+		int thisNextY = this.py + this.vy;
+		int thatNextX = that.px + that.vx;
+		int thatNextY = that.py + that.vy;
+
+		return (thisNextX + this.width >= thatNextX && thisNextY + this.height >= thatNextY
+				&& thatNextX + that.width >= thisNextX && thatNextY + that.height >= thisNextY);
+	}
+
+	/**
+	 * Update the velocity of the object in response to hitting an obstacle in the
+	 * given direction. If the direction is null, this method has no effect on the
+	 * object.
+	 *
+	 * @param d The direction in which this object hit an obstacle
+	 */
+	public void bounce(Direction d) {
+		if (d == null) {
+			return;
+		}
+
+		switch (d) {
+		case UP:
+			this.vy = Math.abs(this.vy);
+			break;
+		case DOWN:
+			this.vy = -Math.abs(this.vy);
+			break;
+		case LEFT:
+			this.vx = Math.abs(this.vx);
+			break;
+		case RIGHT:
+			this.vx = -Math.abs(this.vx);
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * Determine whether the game object will hit a wall in the next time step. If
+	 * so, return the direction of the wall in relation to this game object.
+	 * 
+	 * @return Direction of impending wall, null if all clear.
+	 */
+	public Direction hitWall() {
+		if (this.px + this.vx < 0) {
+			return Direction.LEFT;
+		} else if (this.px + this.vx > this.maxX) {
+			return Direction.RIGHT;
+		}
+
+		if (this.py + this.vy < 0) {
+			return Direction.UP;
+		} else if (this.py + this.vy > this.maxY) {
+			return Direction.DOWN;
+		} else {
+			return null;
+		}
+	}
+
+	public Direction getDirection() {
+		if (this.vx < 0) {
+			return Direction.LEFT;
+		} else if (vx > 0) {
+			return Direction.RIGHT;
+		} else if (vy < 0) {
+			return Direction.UP;
+		} else if (vy > 0) {
+			return Direction.DOWN;
+		}
+		return null; // not moving
+	}
+
+	/**
+	 * Determine whether the game object will hit another object in the next time
+	 * step. If so, return the direction of the other object in relation to this
+	 * game object.
+	 * 
+	 * @param that The other object
+	 * @return Direction of impending object, null if all clear.
+	 */
+	public Direction hitObj(GameObj that) {
+		if (this.willIntersect(that)) {
+			double dx = that.px + that.width / 2 - (this.px + this.width / 2);
+			double dy = that.py + that.height / 2 - (this.py + this.height / 2);
+
+			double theta = Math.acos(dx / (Math.sqrt(dx * dx + dy * dy)));
+			double diagTheta = Math.atan2(this.height / 2, this.width / 2);
+
+			if (theta <= diagTheta) {
+				return Direction.RIGHT;
+			} else if (theta > diagTheta && theta <= Math.PI - diagTheta) {
+				// Coordinate system for GUIs is switched
+				if (dy > 0) {
+					return Direction.DOWN;
+				} else {
+					return Direction.UP;
+				}
+			} else {
+				return Direction.LEFT;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Default draw method that provides how the object should be drawn in the GUI.
+	 * This method does not draw anything. Subclass should override this method
+	 * based on how their object should appear.
+	 * 
+	 * @param g The <code>Graphics</code> context used for drawing the object.
+	 *          Remember graphics contexts that we used in OCaml, it gives the
+	 *          context in which the object should be drawn (a canvas, a frame,
+	 *          etc.)
+	 */
+	public abstract void draw(Graphics g);
 }
