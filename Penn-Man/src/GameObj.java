@@ -138,6 +138,9 @@ public abstract class GameObj {
 		// bottom right
 		int x2 = coords[2];
 		int y2 = coords[3];
+		
+		int x_c = (2 * this.getPx() + this.getWidth()) / 2;
+		int y_c = (2 * this.getPy() + this.getHeight()) / 2; 
 
 		if (d == null) {
 			return;
@@ -201,6 +204,8 @@ public abstract class GameObj {
 				|| maze[y2][x1] == 1 
 				|| maze[y1][x2] == 1;
 	}
+	
+	
 
 	/**
 	 * Moves the object by its velocity. Ensures that the object does not go outside
