@@ -20,15 +20,7 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 public class GameCourt extends JPanel {
-
-	// the state of the game logic
-	private Man pennMan = new Man(COURT_WIDTH, COURT_HEIGHT);
-
-	public static boolean leftLock = false;
-	public static boolean rightLock = false;
-	public static boolean upLock = false;
-	public static boolean downLock = false;
-
+	
 	public static final int[][] maze = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
 			{ 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
@@ -38,6 +30,21 @@ public class GameCourt extends JPanel {
 			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, };
+
+	// the state of the game logic
+	public static Man pennMan = new Man();
+	private TA ta1 = new TA(COURT_WIDTH / 2,COURT_HEIGHT / 2, 3, 0, true); 
+	private TA ta2 = new TA(COURT_WIDTH / 2 + TA.SIZE, COURT_HEIGHT / 2, 3, 0, true); 
+	private TA ta3 = new TA(COURT_WIDTH / 2 - TA.SIZE, COURT_HEIGHT / 2, 3, 0, false);
+	private TA ta4 = new TA(COURT_WIDTH / 2  -TA.SIZE, COURT_HEIGHT / 2, 3, 0, false); 
+	
+
+	public static boolean leftLock = false;
+	public static boolean rightLock = false;
+	public static boolean upLock = false;
+	public static boolean downLock = false;
+
+	
 
 	private boolean playing = false; // whether the game is running
 	private JLabel status; // Current status text, i.e. "Running..."
@@ -137,6 +144,11 @@ public class GameCourt extends JPanel {
 			// square.move();
 			// snitch.move();
 			pennMan.move(); 
+			ta1.move(); 
+			ta2.move();
+			ta3.move();
+			ta4.move();
+			
 			// make the snitch bounce off walls...
 			// snitch.bounce(snitch.hitWall());
 			// ...and the mushroom
@@ -162,7 +174,10 @@ public class GameCourt extends JPanel {
 		pennMan.takePSet(); 
 		drawMaze(g);
 		pennMan.draw(g);
-
+		ta1.draw(g);
+		ta2.draw(g);
+		ta3.draw(g);
+		ta4.draw(g);
 	}
 
 	/*

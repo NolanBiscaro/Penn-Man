@@ -12,7 +12,11 @@ import javax.swing.*;
 /**
  * Game Main class that specifies the frame and widgets of the GUI
  */
+
 public class Game implements Runnable {
+	
+	public static JLabel score = new JLabel(); 
+	
     public void run() {
         // NOTE : recall that the 'final' keyword notes immutability even for local variables.
 
@@ -38,10 +42,12 @@ public class Game implements Runnable {
         final JPanel scoreboard = new JPanel();
         scoreboard.setBackground(Color.BLACK);
         scoreboard.setBorder((BorderFactory.createLineBorder(Color.RED)));
-        scoreboard.setLayout(new FlowLayout());
+        
         
         //score
-        JLabel score = new JLabel("HEY", JLabel.LEFT); 
+        score = new JLabel("SCORE: 0", JLabel.LEFT); 
+        scoreboard.setLayout(new FlowLayout());
+        score.setForeground(Color.WHITE);
         scoreboard.add(score);
         
         scoreboard.setPreferredSize(new Dimension(50, 70));
@@ -75,5 +81,9 @@ public class Game implements Runnable {
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Game());
+    }
+    
+    public static void updateScore(int s) {
+    	 score.setText("SCORE: " + Integer.toString(s));
     }
 }

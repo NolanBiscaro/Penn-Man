@@ -5,9 +5,13 @@
  * @version 2.1, Apr 2017
  */
 
-
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 
 /**
  * An object in the game.
@@ -23,16 +27,16 @@ public abstract class GameObj {
 	 * Coordinates are given by the upper-left hand corner of the object. This
 	 * position should always be within bounds. 0 <= px <= maxX 0 <= py <= maxY
 	 */
-	private int px;
-	private int py;
+	protected int px;
+	protected int py;
 
 	/* Size of object, in pixels. */
 	private int width;
 	private int height;
 
 	/* Velocity: number of pixels to move every time move() is called. */
-	private int vx;
-	private int vy;
+	protected int vx;
+	protected int vy;
 
 	/*
 	 * Upper bounds of the area in which the object can be positioned. Maximum
@@ -49,6 +53,7 @@ public abstract class GameObj {
 	 * Constructor
 	 */
 	public GameObj(int vx, int vy, int px, int py, int width, int height, int courtWidth, int courtHeight) {
+		System.out.println(GameCourt.maze); 
 		this.vx = vx;
 		this.vy = vy;
 		this.px = px;
@@ -120,7 +125,7 @@ public abstract class GameObj {
 	 * for the object. (i.e. Object cannot go outside of the active area the user
 	 * defines for it).
 	 */
-	private void clip() {
+	protected void clip() {
 		this.px = Math.min(Math.max(this.px, 0), this.maxX);
 		this.py = Math.min(Math.max(this.py, 0), this.maxY);
 	}
@@ -129,7 +134,7 @@ public abstract class GameObj {
 	 * *Prevents the object from crossing the boundaries formed by the maze
 	 * (restricts it to the halls).
 	 */
-	private void restrict(Direction d) {
+	protected void restrict(Direction d) {
 		int[] coords = translate();
 
 		// top left
@@ -139,52 +144,21 @@ public abstract class GameObj {
 		// bottom right
 		int x2 = coords[2];
 		int y2 = coords[3];
-		
-		int x_c = (2 * this.getPx() + this.getWidth()) / 2;
-		int y_c = (2 * this.getPy() + this.getHeight()) / 2; 
 
 		if (d == null) {
 			return;
 		}
-
-		if (collision(x1, y1, x2, y2, 1)) { //1 is target because looking for walls
-			switch (d) {
-			case UP:
-				GameCourt.upLock = true;
-				this.py += 4;
-				this.setVy(0);
-				break;
-
-			case DOWN:
-				GameCourt.downLock = true;
-				this.py -= 4;
-				this.setVy(0);
-				break;
-
-			case RIGHT:
-				GameCourt.rightLock = true;
-				this.px -= 4;
-				this.setVx(0);
-				break;
-
-			case LEFT:
-				GameCourt.leftLock = true;
-				this.px += 4;
-				this.setVx(0);
-				break;
-
-			default:
-				break;
+		if (collision(x1, y1, x2, y2, 1) || this.getPx() == maxX || this.getPy() == maxY || this.getPx() == 0) { // 1 is target because looking for walls			
+			if (this.vx <= 0 && this.getPx() == 0) {
+				bounce(Direction.LEFT); 
 			}
-
-		} else {
-			GameCourt.resetLocks();
+			
+			bounce(d);
 		}
-
 	}
 
 	// translates pixel coordinates into tile coordinate
-	private int[] translate() {
+	protected int[] translate() {
 
 		int x1 = this.getPx();
 		int y1 = this.getPy();
@@ -200,24 +174,20 @@ public abstract class GameObj {
 	}
 
 	protected boolean collision(int x1, int y1, int x2, int y2, int target) {
-		return maze[y1][x1] == target 
-				|| maze[y2][x2] == target 
-				|| maze[y2][x1] == target
-				|| maze[y1][x2] == target;
+		return maze[y1][x1] == target || maze[y2][x2] == target || maze[y2][x1] == target || maze[y1][x2] == target;
 	}
-	
-	
 
 	/**
 	 * Moves the object by its velocity. Ensures that the object does not go outside
 	 * its bounds by clipping.
 	 */
-	public void move() {
+	protected void move() {
 		this.px += this.vx;
 		this.py += this.vy;
-		clip();
-		restrict(this.getDirection());
+		this.clip();
 	}
+	
+	
 
 	/**
 	 * Determine whether this game object is currently intersecting another object.
@@ -351,6 +321,18 @@ public abstract class GameObj {
 			return null;
 		}
 	}
+
+	protected static Image loadImage(String file) {
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(file));
+		} catch (IOException e) {
+			System.out.println("Error fetching Man image");
+			e.printStackTrace();
+		}
+		return img;
+	}
+
 	/**
 	 * Default draw method that provides how the object should be drawn in the GUI.
 	 * This method does not draw anything. Subclass should override this method
@@ -362,4 +344,5 @@ public abstract class GameObj {
 	 *          etc.)
 	 */
 	public abstract void draw(Graphics g);
+
 }

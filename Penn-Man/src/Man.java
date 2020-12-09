@@ -27,7 +27,7 @@ public class Man extends GameObj {
 	private static final int INIT_POS_X = 0;
 	private static final int INIT_POS_Y = 0;
 	private static final int SIZE = 30;
-	private static final int TILE_SIZE = 32;
+	protected static final int TILE_SIZE = 32;
 	
 	String manOpen = "files/man.png";
 	String manClose = "files/man_close.png";
@@ -43,10 +43,10 @@ public class Man extends GameObj {
 
 	public static int score = 0;
 	
-	private int[][] maze = GameCourt.maze;
+	private static int[][] maze = GameCourt.maze;
 
-	public Man(int courtWidth, int courtHeight) {
-		super(INIT_VEL_X, INIT_VEL_Y, INIT_POS_X, INIT_POS_Y, SIZE, SIZE, courtWidth, courtHeight);
+	public Man() {
+		super(INIT_VEL_X, INIT_VEL_Y, INIT_POS_X, INIT_POS_Y, SIZE, SIZE, GameCourt.COURT_WIDTH, GameCourt.COURT_HEIGHT);
 
 	}
 
@@ -57,16 +57,7 @@ public class Man extends GameObj {
 		icon = open; 
 	}
 
-	private static Image loadImage(String file) {
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File(file));
-		} catch (IOException e) {
-			System.out.println("Error fetching Man image");
-			e.printStackTrace();
-		}
-		return img;
-	}
+	
 
 	public void takePSet() {
 		int x1 = this.getPx();
@@ -80,12 +71,75 @@ public class Man extends GameObj {
 		if (maze[c_y][c_x] == 0) {
 			maze[c_y][c_x] = -1;
 			score += 1; 
+			Game.updateScore(score);
 			icon = close; 
 			audioClip.setFramePosition(11000);
 			audioClip.start();
 			
 			System.out.println("play");
 		}
+	}
+	
+	@Override
+	protected void move() {
+		this.px += this.vx;
+		this.py += this.vy;
+		clip();
+		restrict(this.getDirection());
+	}
+	
+	@Override
+	protected void restrict(Direction d) {
+		int[] coords = translate();
+
+		// top left
+		int x1 = coords[0];
+		int y1 = coords[1];
+
+		// bottom right
+		int x2 = coords[2];
+		int y2 = coords[3];
+
+		if (d == null) {
+			return;
+		}
+
+		if (collision(x1, y1, x2, y2, 1)) { // 1 is target because looking for walls
+			switch (d) {
+			case UP:
+				GameCourt.upLock = true;
+				this.py += 4;
+				this.setVy(0);
+				break;
+
+			case DOWN:
+				GameCourt.downLock = true;
+				this.py -= 4;
+				this.setVy(0);
+				break;
+
+			case RIGHT:
+				GameCourt.rightLock = true;
+				this.px -= 4;
+				this.setVx(0);
+				break;
+
+			case LEFT:
+				GameCourt.leftLock = true;
+				this.px += 4;
+				this.setVx(0);
+				break;
+
+			default:
+				break;
+			}
+
+		} else
+
+		{
+			GameCourt.resetLocks();
+		}
+
 	}
 
 	private static AudioInputStream initStream(String file) {
