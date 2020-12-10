@@ -35,25 +35,25 @@ public class GameCourt extends JPanel {
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
 			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, 
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, 
+			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, 
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, };
 
 	// the state of the game logic
 	public static Man pennMan = new Man();
-	private TA ta1 = new TA(31, 3, 2, 0, false); 
-	private TA ta2 = new TA(31, 3, 2, 0, false); 
-	private TA ta3 = new TA(31, 3, 2, 0, false);
-	private TA ta4 = new TA(31, 3, 2, 0, false); 
+	private TA ta1 = new TA(2, 0, false); 
+	private TA ta2 = new TA(2, 0, false); 
+	private TA ta3 = new TA(2, 0, false);
+	private TA ta4 = new TA(2, 0, false); 
+	private TA[] TAs  = { ta1, ta2, ta3, ta4 }; 
 	
 
 	public static boolean leftLock = false;
 	public static boolean rightLock = false;
 	public static boolean upLock = false;
 	public static boolean downLock = false;
-	
-	public static int lives = 3; 
 
+	public static final int maxScore = 141; 
 	
 
 	private boolean playing = false; // whether the game is running
@@ -154,6 +154,15 @@ public class GameCourt extends JPanel {
 			// square.move();
 			// snitch.move();
 			
+			if (isIntersection()) {
+				updateLives(); 
+			}
+			 
+			if (Man.score == maxScore) {
+				winGame();
+			}
+			
+			
 			
 			pennMan.move(); 
 			ta1.move(); 
@@ -176,13 +185,71 @@ public class GameCourt extends JPanel {
 			repaint();
 		}
 	}
-	/*
+	
 	private boolean isIntersection() {
 		return pennMan.intersects(ta1)
 		|| pennMan.intersects(ta2) 
 		|| pennMan.intersects(ta3) 
 		|| pennMan.intersects(ta4); 
-	}*/
+	}
+	
+	private void updateLives() {
+		Man.lives -= 1; 
+		Game.updateLives();
+		if (Man.lives <= 0) {
+			loseGame();
+		} else {
+			stopMovement(); 
+			int answer = JOptionPane.showConfirmDialog(null, "You were caught using stack overflow by the TA! "
+					+ "Do you wish to continue, or do your accept failure?"); //yes = 0, no = 1, 2 = cancel
+			if (answer == 0) {
+				newLife();
+			} else {
+				Game.quit(); 
+			}
+		}
+	}
+	
+	private void stopMovement() {
+		pennMan.setVy(0);
+		pennMan.setVx(0);
+		for (TA t : TAs) {
+			t.setVx(0);
+			t.setVy(0);			
+		}
+	}
+	
+	private void loseGame() {
+		stopMovement(); 
+		Game.addRecord();
+		String[] options = { "Quit"};
+		JOptionPane.showMessageDialog(null, "You have failed the class");
+		//int option = JOptionPane.showOptionDialog(null, "You have failed the class", "F", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+		//if (options[option].equals("Leaderboard")) {
+		//	Game.showLb();
+		//} else {
+			Game.quit();
+		//}
+	}
+	
+	private void winGame() {
+		JOptionPane.showMessageDialog(null, "Congratualtions! You have passed the class");
+		Game.quit();
+	}
+	
+	private void newLife() {
+		pennMan.setPx(Man.INIT_POS_X);
+		pennMan.setPy(Man.INIT_POS_Y);
+		pennMan.setVx(Man.INIT_VEL_X);
+		pennMan.setVy(Man.INIT_VEL_Y);
+		for (TA t : TAs) {
+			t.setPx(TA.INIT_PX);
+			t.setPy(TA.INIT_PY);
+			t.setVx(TA.INIT_VX);
+			t.setVy(TA.INIT_VY);
+		}
+		
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {

@@ -7,14 +7,16 @@ public class TA extends GameObj {
 	public static final int SIZE = 30;
 	private int maxX;
 	private int maxY;
-	// private static final int INIT_PX = 0;
-	// private static final int INIT_PY = 0;
+	public static final int INIT_PX = GameCourt.COURT_WIDTH / 2;
+	public static final int INIT_PY = GameCourt.COURT_HEIGHT / 2;
+	public static final int INIT_VX = 2; 
+	public static final int INIT_VY = 0; 
 	private static String file = "files/TA.png";
 	public boolean chaser;
 	Image icon = loadImage(file);
 	private static int[][] maze = GameCourt.maze;
 
-	public TA(int INIT_PX, int INIT_PY, int INIT_VX, int INIT_VY, boolean chaser) {
+	public TA(int INIT_VX, int INIT_VY, boolean chaser) {
 		super(INIT_VX, INIT_VY, INIT_PX, INIT_PY, SIZE, SIZE, GameCourt.COURT_WIDTH, GameCourt.COURT_HEIGHT);
 		this.chaser = chaser;
 		this.maxX = GameCourt.COURT_WIDTH - SIZE;
@@ -196,6 +198,22 @@ public class TA extends GameObj {
 		this.setPx(c_x1);
 		this.setPy(c_y1);
 
+	}
+	
+	public void setPx(int px) {
+		this.px = px; 
+	}
+	
+	public void setPy(int py) {
+		this.py = py; 
+	}
+	
+	public void setVx(int vx) {
+		this.vx = vx; 
+	}
+	
+	public void setVy(int vy) {
+		this.vy = vy; 
 	}
 
 }

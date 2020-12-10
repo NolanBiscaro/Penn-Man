@@ -22,10 +22,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Man extends GameObj {
 
-	private static final int INIT_VEL_X = 0;
-	private static final int INIT_VEL_Y = 0;
-	private static final int INIT_POS_X = 0;
-	private static final int INIT_POS_Y = 0;
+	public static final int INIT_VEL_X = 0;
+	public static final int INIT_VEL_Y = 0;
+	public static final int INIT_POS_X = 31;
+	public static final int INIT_POS_Y = 3;
 	private static final int SIZE = 30;
 	protected static final int TILE_SIZE = 32;
 	
@@ -42,6 +42,8 @@ public class Man extends GameObj {
 	AudioInputStream stream = initStream(chomp);
 
 	public static int score = 0;
+	
+	public static int lives = 3; 
 	
 	private static int[][] maze = GameCourt.maze;
 
