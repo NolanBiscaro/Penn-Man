@@ -16,6 +16,7 @@ import javax.swing.*;
 public class Game implements Runnable {
 	
 	public static JLabel score = new JLabel(); 
+	public static JLabel lives = new JLabel(); 
 	
     public void run() {
         // NOTE : recall that the 'final' keyword notes immutability even for local variables.
@@ -49,6 +50,11 @@ public class Game implements Runnable {
         scoreboard.setLayout(new FlowLayout());
         score.setForeground(Color.WHITE);
         scoreboard.add(score);
+        
+        //lives
+        lives = new JLabel("LIVES: ", JLabel.RIGHT); 
+        lives.setForeground(Color.WHITE);
+        scoreboard.add(lives);
         
         scoreboard.setPreferredSize(new Dimension(50, 70));
         
@@ -85,5 +91,9 @@ public class Game implements Runnable {
     
     public static void updateScore(int s) {
     	 score.setText("SCORE: " + Integer.toString(s));
+    }
+    
+    public static void updateLives() {
+    	lives.setText("LIVES: " + lives);
     }
 }

@@ -21,28 +21,38 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class GameCourt extends JPanel {
 	
-	public static final int[][] maze = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
-			{ 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
-			{ 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0 }, { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
-			{ 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
-			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
-			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, };
+	public static final int[][] maze = { 
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0 }, 
+			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+			{ 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0 }, 
+			{ 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+			{ 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0 }, 
+			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0 },
+			{ 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0 }, 
+			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
+			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, 
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
+			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, 
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, 
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, };
 
 	// the state of the game logic
 	public static Man pennMan = new Man();
-	private TA ta1 = new TA(COURT_WIDTH / 2,COURT_HEIGHT / 2, 3, 0, true); 
-	private TA ta2 = new TA(COURT_WIDTH / 2 + TA.SIZE, COURT_HEIGHT / 2, 3, 0, true); 
-	private TA ta3 = new TA(COURT_WIDTH / 2 - TA.SIZE, COURT_HEIGHT / 2, 3, 0, false);
-	private TA ta4 = new TA(COURT_WIDTH / 2  -TA.SIZE, COURT_HEIGHT / 2, 3, 0, false); 
+	private TA ta1 = new TA(31, 3, 2, 0, false); 
+	private TA ta2 = new TA(31, 3, 2, 0, false); 
+	private TA ta3 = new TA(31, 3, 2, 0, false);
+	private TA ta4 = new TA(31, 3, 2, 0, false); 
 	
 
 	public static boolean leftLock = false;
 	public static boolean rightLock = false;
 	public static boolean upLock = false;
 	public static boolean downLock = false;
+	
+	public static int lives = 3; 
 
 	
 
@@ -143,9 +153,11 @@ public class GameCourt extends JPanel {
 			// advance the square and snitch in their current direction.
 			// square.move();
 			// snitch.move();
+			
+			
 			pennMan.move(); 
 			ta1.move(); 
-			ta2.move();
+		 	ta2.move();
 			ta3.move();
 			ta4.move();
 			
@@ -164,6 +176,13 @@ public class GameCourt extends JPanel {
 			repaint();
 		}
 	}
+	/*
+	private boolean isIntersection() {
+		return pennMan.intersects(ta1)
+		|| pennMan.intersects(ta2) 
+		|| pennMan.intersects(ta3) 
+		|| pennMan.intersects(ta4); 
+	}*/
 
 	@Override
 	public void paintComponent(Graphics g) {

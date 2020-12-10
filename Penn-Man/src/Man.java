@@ -88,9 +88,11 @@ public class Man extends GameObj {
 		restrict(this.getDirection());
 	}
 	
-	@Override
+	//@Override
 	protected void restrict(Direction d) {
-		int[] coords = translate();
+		int leftBuff = 6; 
+		int rightBuff = 26; 
+		int[] coords = translate(leftBuff, rightBuff);
 
 		// top left
 		int x1 = coords[0];

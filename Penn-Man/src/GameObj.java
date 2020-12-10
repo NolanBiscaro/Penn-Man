@@ -134,8 +134,11 @@ public abstract class GameObj {
 	 * *Prevents the object from crossing the boundaries formed by the maze
 	 * (restricts it to the halls).
 	 */
+	/*
 	protected void restrict(Direction d) {
-		int[] coords = translate();
+		int leftBuff = 6;
+		int rightBuff = 26;
+		int[] coords = translate(leftBuff, rightBuff);
 
 		// top left
 		int x1 = coords[0];
@@ -155,19 +158,19 @@ public abstract class GameObj {
 			
 			bounce(d);
 		}
-	}
+	}*/ 
 
 	// translates pixel coordinates into tile coordinate
-	protected int[] translate() {
+	protected int[] translate(int leftBuff, int rightBuff) {
 
 		int x1 = this.getPx();
 		int y1 = this.getPy();
 
-		int x1_trans = (int) Math.ceil((x1 + 6) / 32);
-		int y1_trans = (int) Math.ceil((y1 + 6) / 32);
+		int x1_trans = Math.max(0, (int) Math.floor((x1 + leftBuff) / 32));
+		int y1_trans = Math.max(0, (int) Math.floor((y1 + leftBuff) / 32));
 
-		int x2_trans = (int) Math.ceil(x1 + 26) / 32;
-		int y2_trans = (int) Math.ceil(y1 + 26) / 32;
+		int x2_trans = Math.min(15, (int) Math.floor(x1 + rightBuff) / 32);
+		int y2_trans = Math.min(15, (int) Math.floor(y1 + rightBuff) / 32);
 
 		int[] coords = { x1_trans, y1_trans, x2_trans, y2_trans };
 		return coords;
