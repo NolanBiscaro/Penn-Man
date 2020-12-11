@@ -33,7 +33,7 @@ public class GameCourt extends JPanel {
 			{ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
 			{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 }, 
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
-			{ 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, 
+			{ 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0 }, 
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 			{ 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, 
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -45,7 +45,9 @@ public class GameCourt extends JPanel {
 	private TA ta2 = new TA(2, 0, false); 
 	private TA ta3 = new TA(2, 0, false);
 	private TA ta4 = new TA(2, 0, false); 
-	private TA[] TAs  = { ta1, ta2, ta3, ta4 }; 
+	private TA ta5 = new TA(2, 0, false); 
+	private TA ta6 = new TA(2, 0, false); 
+	private TA[] TAs  = { ta1, ta2, ta3, ta4, ta5, ta6 }; 
 	
 
 	public static boolean leftLock = false;
@@ -169,6 +171,9 @@ public class GameCourt extends JPanel {
 		 	ta2.move();
 			ta3.move();
 			ta4.move();
+			ta5.move();
+			ta6.move();
+			
 			
 			// make the snitch bounce off walls...
 			// snitch.bounce(snitch.hitWall());
@@ -187,6 +192,7 @@ public class GameCourt extends JPanel {
 	}
 	
 	private boolean isIntersection() {
+		
 		return pennMan.intersects(ta1)
 		|| pennMan.intersects(ta2) 
 		|| pennMan.intersects(ta3) 
@@ -264,6 +270,9 @@ public class GameCourt extends JPanel {
 		ta2.draw(g);
 		ta3.draw(g);
 		ta4.draw(g);
+		ta5.draw(g);
+		ta6.draw(g);
+		
 	}
 
 	/*

@@ -35,7 +35,6 @@ public class Game implements Runnable {
 	private static final String filename = "files/storedData";
 	private boolean startGame = false; 
 	private boolean showLeaderboard = false; 
-	public JList data = new JList(); 
 	public static final JFrame lb = new JFrame("Leaderboard");
     public void run() {
         // NOTE : recall that the 'final' keyword notes immutability even for local variables.
