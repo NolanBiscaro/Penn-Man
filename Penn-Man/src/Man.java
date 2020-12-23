@@ -1,17 +1,8 @@
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,159 +13,189 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Man extends GameObj {
 
-	public static final int INIT_VEL_X = 0;
-	public static final int INIT_VEL_Y = 0;
-	public static final int INIT_POS_X = 31;
-	public static final int INIT_POS_Y = 3;
-	private static final int SIZE = 30;
-	protected static final int TILE_SIZE = 32;
-	
-	String manOpen = "files/man.png";
-	String manClose = "files/man_close.png";
-	String chomp = "files/pennman_chomp.wav";
-	
-	Image open = loadImage(manOpen);
-	Image close = loadImage(manClose); 
-	
-	Image icon = open; 
-	
-	Clip audioClip = initSoundFile(chomp);
-	AudioInputStream stream = initStream(chomp);
+    public static final int INIT_VEL_X = 0;
+    public static final int INIT_VEL_Y = 0;
+    public static final int INIT_POS_X = 31;
+    public static final int INIT_POS_Y = 3;
+    private static final int SIZE = 30;
+    protected static final int TILE_SIZE = 32;
+    
+    /*
+     * Inital score and lives that the user begins with. 
+     */
+    private static int score = 0;
+    private static int lives = 3;
+    
+    /*
+     * the following booleans are used to lock the arrow keys.
+     * Upon collision with one of the maze walls we can simply lock
+     * the arrow keys so the user can't travel any further, and 
+     * is restricted to the walls of the maze. 
+     */
+    boolean upLock = false;
+    boolean downLock = false;
+    boolean leftLock = false; 
+    boolean rightLock = false; 
 
-	public static int score = 0;
-	
-	public static int lives = 3; 
-	
-	private static int[][] maze = GameCourt.maze;
+    /* 
+     * manOpen corresponds to the avatar with its 
+     * mouth open. Similar for manClose. Switching back
+     * and forth between the two simulates eating.
+     */
+    String manOpen = "files/man.png";
+    String manClose = "files/man_close.png";
+    String chomp = "files/pennman_chomp.wav";
 
-	public Man() {
-		super(INIT_VEL_X, INIT_VEL_Y, INIT_POS_X, INIT_POS_Y, SIZE, SIZE, GameCourt.COURT_WIDTH, GameCourt.COURT_HEIGHT);
+    Image open = loadImage(manOpen);
+    Image close = loadImage(manClose);
+    Image icon = open;
 
-	}
+    Clip audioClip = initSoundFile(chomp);
+    AudioInputStream stream = initStream(chomp);
 
-	@Override
-	public void draw(Graphics g) {
-		g.drawImage(icon, this.getPx(), this.getPy(), this.getWidth(), this.getHeight(), null, null);
-		g.setColor(Color.RED);
-		icon = open; 
-	}
+    private static int[][] maze = GameCourt.MAZE;
 
-	
+    public Man(int courtWidth, int courtHeight) {
+        super(INIT_VEL_X, INIT_VEL_Y, INIT_POS_X, INIT_POS_Y, SIZE, SIZE, courtHeight,
+                courtHeight);
 
-	public void takePSet() {
-		int x1 = this.getPx();
-		int y1 = this.getPy();
-		int x2 = (x1 + TILE_SIZE);
-		int y2 = (y1 + TILE_SIZE);
+    }
 
-		int c_x = ((x1 + x2) / 2) / TILE_SIZE;
-		int c_y = ((y1 + y2) / 2) / TILE_SIZE;
+    @Override
+    public void draw(Graphics g) {
+        g.drawImage(icon, this.getPx(), this.getPy(),
+                this.getWidth(), this.getHeight(), null, null);
+        g.setColor(Color.RED);
+        icon = open;
+    }
 
-		if (maze[c_y][c_x] == 0) {
-			maze[c_y][c_x] = -1;
-			score += 1; 
-			Game.updateScore(score);
-			icon = close; 
-			audioClip.setFramePosition(11000);
-			audioClip.start();
-			
-			System.out.println("play");
-		}
-	}
-	
-	@Override
-	protected void move() {
-		this.px += this.vx;
-		this.py += this.vy;
-		clip();
-		restrict(this.getDirection());
-	}
-	
-	//@Override
-	protected void restrict(Direction d) {
-		int leftBuff = 6; 
-		int rightBuff = 26; 
-		int[] coords = translate(leftBuff, rightBuff);
+    public void takePSet() {
+        int x1 = this.getPx();
+        int y1 = this.getPy();
+        int x2 = (x1 + TILE_SIZE);
+        int y2 = (y1 + TILE_SIZE);
+        
+        //get center position of tile
+        int centerX = ((x1 + x2) / 2) / TILE_SIZE;
+        int centerY = ((y1 + y2) / 2) / TILE_SIZE;
 
-		// top left
-		int x1 = coords[0];
-		int y1 = coords[1];
+        //check for p-set
+        if (maze[centerY][centerX] == 0) {
+            maze[centerY][centerX] = -1;
+            score += 1;
+            Game.updateScore(score);
+            icon = close;
+            audioClip.setFramePosition(11000);
+            audioClip.start();
+        }
+    }
 
-		// bottom right
-		int x2 = coords[2];
-		int y2 = coords[3];
+    @Override
+    public void restrict(Direction d) {
+        int leftBuff = 3;
+        int rightBuff = 30;
+        int[] coords = translate(leftBuff, rightBuff);
 
-		if (d == null) {
-			return;
-		}
+        // top left
+        int x1 = coords[0];
+        int y1 = coords[1];
 
-		if (collision(x1, y1, x2, y2, 1)) { // 1 is target because looking for walls
-			switch (d) {
-			case UP:
-				GameCourt.upLock = true;
-				this.py += 4;
-				this.setVy(0);
-				break;
+        // bottom right
+        int x2 = coords[2];
+        int y2 = coords[3];
 
-			case DOWN:
-				GameCourt.downLock = true;
-				this.py -= 4;
-				this.setVy(0);
-				break;
+        if (d == null) {
+            return;
+        }
+        
+        // 1 is target because looking for walls
+        if (collision(x1, y1, x2, y2, 1)) { 
+            System.out.println("colliding");
+            switch (d) {
+                case UP:
+                    upLock = true; 
+                    this.setPy(this.getPy() + 4);
+                    this.setVy(0);
+                    break;
+    
+                case DOWN:
+                    downLock = true; 
+                    this.setPy(this.getPy() - 4);
+                    this.setVy(0);
+                    break;
+    
+                case RIGHT:
+                    rightLock = true;
+                    this.setPx(this.getPx() - 4);
+                    this.setVx(0);
+                    break;
+    
+                case LEFT:
+                    leftLock = true; 
+                    this.setPx(this.getPx() + 4);
+                    this.setVx(0);
+                    break;
+    
+                default:
+                    break;
+            }
 
-			case RIGHT:
-				GameCourt.rightLock = true;
-				this.px -= 4;
-				this.setVx(0);
-				break;
+        } else {
+            resetLocks();
+        }
 
-			case LEFT:
-				GameCourt.leftLock = true;
-				this.px += 4;
-				this.setVx(0);
-				break;
+    }
+    
+    public void resetLocks() {
+        upLock = false;
+        downLock = false; 
+        leftLock = false; 
+        rightLock = false; 
+    }
+    
+    public static int getScore() {
+        return score; 
+    }
+    
+    public static int getLives() {
+        return lives; 
+    }
+    
+    public static void setLives(int l) { 
+        lives = l; 
+    }
+    
+    public static void setScore(int s) {
+        score = s;
+    }
 
-			default:
-				break;
-			}
+    private static AudioInputStream initStream(String file) {
+        File audioFile = new File(file);
+        AudioInputStream stream = null;
+        try {
+            stream = AudioSystem.getAudioInputStream(audioFile);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stream;
+    }
 
-		} else
-
-		{
-			GameCourt.resetLocks();
-		}
-
-	}
-
-	private static AudioInputStream initStream(String file) {
-		File audioFile = new File(file);
-		AudioInputStream stream = null;
-		try {
-			stream = AudioSystem.getAudioInputStream(audioFile);
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return stream;
-	}
-
-	private Clip initSoundFile(String file) {
-		Clip audioClip = null;
-		try {
-			File audioFile = new File(file);
-			stream = AudioSystem.getAudioInputStream(audioFile);
-			AudioFormat format = stream.getFormat();
-			DataLine.Info info = new DataLine.Info(Clip.class, format);
-			audioClip = (Clip) AudioSystem.getLine((info));
-			audioClip.open(stream);
-		} catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-			System.out.println("Error getting sound file");
-			e.printStackTrace();
-		}
-		return audioClip;
-	}
+    private Clip initSoundFile(String file) {
+        Clip audioClip = null;
+        try {
+            File audioFile = new File(file);
+            stream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = stream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            audioClip = (Clip) AudioSystem.getLine((info));
+            audioClip.open(stream);
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            System.out.println("Error getting sound file");
+            e.printStackTrace();
+        }
+        return audioClip;
+    }
 
 }

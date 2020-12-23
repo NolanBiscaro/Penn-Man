@@ -1,17 +1,41 @@
-The following is a rough outline for the project:
+The following is a ROUGH outline for the project:
 
 1. Draw maze:
 	The method for drawing the maze will be as follows:
 	-Define a tile ize that produsces a 16x16 grid for the current canvas size (512x512 canvas gives 32x32 pixel tile). 
-	-Fill the 2d array with either 0s or 1s. 0 = barrier, 1 = p-set (collectable). Othe numbers will later 
-	represent special tokens like power ups etc. 
+	-Fill the 2d array with either 0s or 1s. 0 = barrier, 1 = p-set (collectable).
 	Want to create multiple configurations or a way to randomize the config. can use for different levels
 	We will then be able to traverse through the array and determine where to stop / where to increment the points when 
 	p-set is collected. (sort of serves as a track for Penn-Man to follow)
-2. We will then have to define the various objects, TA's, Penn-Man, Prof, and there corresponding movement speeds and
+2. We will then have to define the various objects, TA's, Penn-Man, and there corresponding movement speeds and
 	abilties
 	2.1 We will need to simulate the objects movement in a realistic way. Cna create difficulty levels for oponnents
 3. Create persistence for pause game or storing user scores
 4. Create main menu
-5. Refractor cod
+5. Refractor code
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Post Project: 
+
+Class Descriptions
+Concept 1: 2d array. 0's represent pathways, 1's represent barriers. For each element in the 16x16 array, a tile of size 32x32 is drawn. 
+This fills the entire 512x512 display (32*16=512). The translate() method is often used throughout the project to move back and forth
+between the array coordinates and the actual graphics coordinates. 
+
+Concept 2: Collections. I used a Map in order to keep track of usernames and their corresponding highscore. This made it easy to 
+group the values together and I was also able to write my own comparable function in order to sort the scores from lowest to highest
+in order to display on the leaderboard. The scores are placed into a JScrollPane therefore it is scrollable and will not overflow if many scores 
+are posted. 
+
+Concept 3: FILE I/O. I am reading and writing a username and highscore to file in order to create persistence. The file is formatted in such a way that
+there is a space between values on the same line, and each new user is placed on a new line. We then go through the file and split based off where the 
+spaces are placed and then seperate and load the data into seperate parts of the game (ex. username and score). The opposite happens when 
+saving the game. 
+
+Concept 4: Inheritance/subtyping. 
+I am initially implementing the Navigate interface which has some basic methods that will allow objects to navigate themselves ect. 
+I am then extending from Runner class which defines useful methods that both the TA class and Man may use. All three classes implement the interface and both 
+Man and TA extend the Runner class. 
+
+Concept 5: JUnit testable compoenent. I have written various JUnit tests that are testing different methods within the classes. 
