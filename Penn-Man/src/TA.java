@@ -1,156 +1,250 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Date;
 
 public class TA extends GameObj {
 
-    public static final int SIZE = 30;
-    private int maxX;
-    private int maxY;
-    public static final int INIT_PX = GameCourt.COURT_WIDTH / 2;
-    public static final int INIT_PY = GameCourt.COURT_HEIGHT / 2;
-    public static final int INIT_VX = 2;
+    private int initPx;
+    private int initPy;
+    public static final int INIT_VX = getBaseSpeed();
     public static final int INIT_VY = 0;
-    private static String file = "files/TA.png";
-    Image icon = loadImage(file);
-    private static int[][] maze = GameCourt.MAZE;
+    private int dynamicSize = 32;
 
-    public TA(int initvX, int initvY) {
-        super(INIT_VX, INIT_VY, INIT_PX, INIT_PY, SIZE, SIZE,
-                GameCourt.COURT_WIDTH, GameCourt.COURT_HEIGHT);
-        this.maxX = GameCourt.COURT_WIDTH - SIZE;
-        this.maxY = GameCourt.COURT_HEIGHT - SIZE;
+    private boolean lostVert, lostHoriz;
+
+    private boolean isChaser;
+    private boolean explode;
+    private boolean isDead;
+    public static boolean scatter;
+
+    public TA(int initPx, int initPy) {
+        super(INIT_VX, INIT_VY, initPx, initPy);
+        this.initPx = initPx;
+        this.initPy = initPy;
+        lostVert = false;
+        lostHoriz = false;
+        scatter = false;
+        isChaser = true;
+        explode = false;
+        isDead = false;
     }
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(icon, this.getPx(), this.getPy(), 
-                this.getWidth(), this.getHeight(), null, null);
-
-    }
-
-    public void restrict(Direction d) {
-
-        int[] coords = translate(2, 31);
-        int x1 = coords[0];
-        int y1 = coords[1];
-        int x2 = coords[2];
-        int y2 = coords[3];
-
-        if (d == null) {
-            return;
-        }
-
-        if ((collision(x1, y1, x2, y2, 1) || atBound())) { // 1 is target because looking for walls
-            turn(this.getDirection(), coords, true);
+        if (scatter) {
+            drawScattered(g);
+        } else {
+            drawTA(g);
         }
     }
 
-    @Override
-    public void move() {
-        int[] coords = translate(2, 31); // 2, 31 provides buffer so TA can fit in halls
-
-        restrict(this.getDirection());
-        clip();
-        turn(this.getDirection(), coords, false);
-        this.setPx(this.getPx() + this.getVx());
-        this.setPy(this.getPy() + this.getVy());
+    public void drawTA(Graphics g) {
+        g.drawImage(ImageController.ta(), this.getPx(), this.getPy(), this.getWidth(),
+                this.getHeight(), null, null);
     }
 
-    private boolean atBound() {
-        return this.getPx() == maxX + 3 || this.getPx() == -3 
-                || this.getPy() == maxY + 3 || this.getPy() == -3;
+    private void drawScattered(Graphics g) {
+        g.drawImage(ImageController.scatter(), this.getPx(), this.getPy(), this.getWidth(),
+                this.getHeight(), null, null);
     }
 
-    protected void turn(Direction d, int[] coords, boolean isCollision) {
-        int x1 = coords[0];
-        int y1 = coords[1];
-        int x2 = coords[2];
-        int y2 = coords[3];
-
-        if (d == null) {
-            return;
+    public void drawExploding(Graphics g) {
+        if (dynamicSize <= 150) {
+            g.drawImage(ImageController.explosion(), this.getPx(), this.getPy(), dynamicSize,
+                    dynamicSize, null, null);
+            dynamicSize += 6;
+            Man.setScore(Man.getScore() + 1);
+        } else {
+            this.kill();
         }
-        if (d.equals(Direction.LEFT) || d.equals(Direction.RIGHT)) {
-            if (pathAbove(x1, y1, x2, y2) && takePath(Direction.UP, isCollision)) {
-                this.setVx(0);
-                this.setVy(-3);
+    }
 
-            } else if (pathBelow(x1, y1, x2, y2) && takePath(Direction.DOWN, isCollision)) {
-                this.setVx(0);
-                this.setVy(3);
-
-            } else if (!(pathAbove(x1, y1, x2, y2)) 
-                    && !(pathBelow(x1, y1, x2, y2)) && isCollision) { // no path //
-                bounce(this.getDirection());
+    private void tryPath(Direction dRel) {
+        Direction toMan = getOppDir(dRel);
+        if (dRel.equals(Direction.UP) || dRel.equals(Direction.DOWN)) {
+            if (isPath(toMan)) {
+                takePath(toMan);
+                lostVert = false;
+            } else {
+                lostVert = true;
             }
         } else {
-            if (pathRight(x1, y1, x2, y2) && takePath(Direction.RIGHT, isCollision)) {
-                this.setVy(0);
-                this.setVx(3);
-            } else if (pathLeft(x1, y1, x2, y2) && takePath(Direction.LEFT, isCollision)) {
-                this.setVy(0);
-                this.setVx(-3);
-
-            } else if (!(pathLeft(x1, y1, x2, y2)) 
-                    && !(pathRight(x1, y1, x2, y2)) && isCollision) { // no path
-                bounce(this.getDirection());
+            if (isPath(toMan)) {
+                takePath(toMan);
+                lostHoriz = false;
+            } else {
+                lostHoriz = true;
             }
         }
 
     }
 
-    private boolean takePath(Direction d, boolean isCollision) {
-        double prob = Math.random();
-        if (isCollision) {
-            return true;
+    private void takeHorizontalPath() {
+        boolean left = isPath(Direction.LEFT);
+        boolean right = isPath(Direction.RIGHT);
+
+        if (!(left) && !(right)) {
+            return;
+        } else if (!(right) && left) {
+            takeLeft();
+        } else if (!(left) && right) {
+            takeRight();
+        } else {
+            randomHorizontal();
         }
-        return prob >= 0.5;
     }
 
-    // checking both corners
-    private boolean pathAbove(int x1, int y1, int x2, int y2) {
-        if (y1 == 0) {
-            return false;
+    private void randomHorizontal() {
+        double p = Math.random();
+        if (p > 0.3) {
+            takeRight();
+        } else {
+            takeLeft();
         }
-
-        return maze[y1 - 1][x1] == 0 && maze[y1 - 1][x2] == 0;
     }
 
-    private boolean pathBelow(int x1, int y1, int x2, int y2) {
-        if (y1 == maze.length - 1) {
-            return false;
+    private void takeVerticalPath() {
+
+        boolean above = isPath(Direction.UP);
+        boolean below = isPath(Direction.DOWN);
+
+        if (!(above) && !(below)) {
+            return;
+        } else if (!(above) && below) {
+            takeBelow();
+        } else if (!(below) && above) {
+            takeAbove();
+        } else {
+            randomVertical();
         }
-        return maze[y1 + 1][x1] == 0 && maze[y1 + 1][x2] == 0;
     }
 
-    private boolean pathLeft(int x1, int y1, int x2, int y2) {
-        if (x1 == 0) {
-            return false;
+    private void randomVertical() {
+        double p = Math.random();
+        if (p > 0.3) {
+            takeAbove();
+        } else {
+            takeBelow();
         }
-        return maze[y1][x1 - 1] == 0 && maze[y2][x1 - 1] == 0;
     }
 
-    private boolean pathRight(int x1, int y1, int x2, int y2) {
-        if (x1 == maze[y1].length - 1) {
-            return false;
+    private Direction relativeX(int thatX) {
+
+        if (this.getPx() == thatX) { // parallel
+            return Direction.PARALLEL;
         }
-        return maze[y1][x1 + 1] == 0 && maze[y2][x1 + 1] == 0;
+        if (this.getPx() > thatX) {
+            return Direction.RIGHT;
+        }
+        return Direction.LEFT;
     }
 
-    public void setPx(int px) {
-        super.setPx(px);
+    private Direction relativeY(int thatY) {
+
+        if (this.getPy() == thatY) { // parallel
+            return Direction.PARALLEL;
+        }
+        if (this.getPy() < thatY) {
+            return Direction.UP;
+        }
+        return Direction.DOWN;
     }
 
-    public void setPy(int py) {
-        super.setPy(py); 
+    private void updateStatus(Direction dirTravel, int thatX, int thatY) {
+        if (dirTravel == null) {
+            return;
+        }
+        Direction ofManY = this.getOppDir(relativeY(thatY));
+        Direction ofManX = this.getOppDir(relativeX(thatX));
+        if (dirTravel.equals(ofManY) || dirTravel.equals(ofManX)) {
+            isChaser = true;
+        }
     }
 
-    public void setVx(int vx) {
-        super.setVx(vx);
+    private void wander(Direction dirTravel, int thatX, int thatY) {
+        boolean vertDir = dirTravel.equals(Direction.UP) || dirTravel.equals(Direction.DOWN);
+        if (vertDir) {
+            takeHorizontalPath();
+        } else if (!(vertDir)) {
+            takeVerticalPath();
+        } else {
+            takeRandomPath();
+        }
+        updateStatus(dirTravel, thatX, thatY);
     }
 
-    public void setVy(int vy) {
-        super.setVy(vy);
+    private void takeRandomPath() {
+        double p = Math.random();
+        if (p > 0.5) {
+            takeVerticalPath();
+        } else {
+            takeHorizontalPath();
+        }
+    }
+
+    protected void navigate(int thatX, int thatY) { // navigates chaser towards Man
+        Direction dirTravel = this.getDirection();
+        boolean parallelX = relativeX(thatX).equals(Direction.PARALLEL);
+        boolean parallelY = relativeY(thatY).equals(Direction.PARALLEL);
+
+        if (scatter) {
+            wander(dirTravel, thatX, thatY);
+        } else if (isChaser) {
+            if (parallelY) {
+                isChaser = false;
+                return;
+            }
+            tryPath(relativeY(thatY));
+            if (parallelX) {
+                isChaser = false;
+                return;
+            }
+            tryPath(relativeX(thatX));
+
+            if (lostHoriz && lostVert) {
+                isChaser = false;
+            }
+        } else {
+            wander(dirTravel, thatX, thatY);
+        }
+    }
+
+    public int getInitPx() {
+        return this.initPx;
+    }
+
+    public int getInitPy() {
+        return this.initPy;
+    }
+
+    public void setChaser(boolean isChaser) {
+        this.isChaser = isChaser;
+    }
+
+    public static boolean isScatter() {
+        return scatter;
+    }
+
+    public static void scatter() {
+
+    }
+
+    public boolean isDead() {
+        return this.isDead;
+    }
+
+    public void kill() {
+        this.explode = false;
+        this.isDead = true;
+    }
+
+    public void blowUp() {
+        this.explode = true;
+    }
+
+    public boolean expoloding() {
+        return this.explode;
     }
 
 }
