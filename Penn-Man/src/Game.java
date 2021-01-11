@@ -37,6 +37,14 @@ public class Game implements Runnable {
     private static JLabel lives = new JLabel(); 
 
     public void run() {
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e1) {
+            e1.printStackTrace();
+        }
+            
 
         loadGame();
         

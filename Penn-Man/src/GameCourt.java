@@ -169,14 +169,10 @@ public class GameCourt extends JPanel {
     }
 
     private void showOptions() {
-        JOptionPane pane = new JOptionPane(); 
-        pane.setBackground(Color.BLACK);
-        pane.setForeground(Color.WHITE);
-        Icon caught = new ImageIcon(ImageController.caught()); 
-        pane.setIcon(caught);
-        int answer = JOptionPane.showConfirmDialog(null,
-                "You were caught by the TA! "
-                        + "Do you wish to continue");
+        Icon caught = new ImageIcon(ImageController.caught());
+        int answer = JOptionPane.showConfirmDialog(this,
+                "You were caught by the TA! " + "Do you wish to continue", "CAUGHT",
+                JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, caught);
         if (answer == 0) {
             newLife();
         } else {
@@ -208,12 +204,16 @@ public class GameCourt extends JPanel {
     private void loseGame() {
         stopMovement();
         Game.addRecord();
-        JOptionPane.showMessageDialog(null, "You have failed the class");
+        ImageIcon icon = new ImageIcon(ImageController.scatter());
+        JOptionPane.showMessageDialog(this, "You Lose.", "LOSE", JOptionPane.INFORMATION_MESSAGE,
+                icon);
         Game.quit();
     }
 
     private void winGame() {
-        JOptionPane.showMessageDialog(null, "Congratualtions! You have passed the class");
+        ImageIcon icon = new ImageIcon(ImageController.win());
+        JOptionPane.showMessageDialog(this, "Congratulations. You have won!", "WINNER",
+                JOptionPane.INFORMATION_MESSAGE, icon);
         Game.quit();
     }
 
@@ -266,12 +266,13 @@ public class GameCourt extends JPanel {
             b = 100;
         }
     }
-    
+
     private static void defaultColors() {
-        r = 0; 
+        r = 0;
         gr = 0;
         b = 255;
     }
+
     /**
      * This method is called every time the timer defined in the constructor
      * triggers.
@@ -279,13 +280,13 @@ public class GameCourt extends JPanel {
     void tick() {
         if (playing) {
             TA intersected = intersection();
-            
+
             if (TA.isScatter()) {
                 colorShift();
             } else {
-                defaultColors(); 
+                defaultColors();
             }
- 
+
             if (intersected != null) {
                 if (TA.isScatter()) {
                     killTA(intersected);
@@ -363,7 +364,7 @@ public class GameCourt extends JPanel {
         g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
         g.setColor(Color.WHITE);
         g.fillOval(j + (TILE_SIZE / 2), i + (TILE_SIZE / 2), 3, 3);
-        P_SETS += 1; 
+        P_SETS += 1;
     }
 
     private static void drawWall(Graphics g, int i, int j) {

@@ -28,6 +28,7 @@ public class ImageController {
     private static final String WIN_FILE = "files/images/winTA.png"; 
     private static final Image WIN = loadImage(WIN_FILE); 
     
+    
     public static Image ta() {
         return TA;
     }
