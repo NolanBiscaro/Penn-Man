@@ -23,7 +23,7 @@ public class ImageController {
     private static final Image COFFEE = loadImage(COFFEE_FILE);
     
     private static final String CAUGHT_FILE = "files/images/caughtTA.png"; 
-    private static final Image CAUGHT = loadImage(CAUGHT_FILE); 
+    private static final Image CAUGHT = loadImage(CAUGHT_FILE);     
     
     private static final String WIN_FILE = "files/images/winTA.png"; 
     private static final Image WIN = loadImage(WIN_FILE); 

@@ -1,7 +1,4 @@
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.util.Date;
 
 public class TA extends GameObj {
 
@@ -16,7 +13,7 @@ public class TA extends GameObj {
     private boolean isChaser;
     private boolean explode;
     private boolean isDead;
-    public static boolean scatter;
+    private static boolean scatter;
 
     public TA(int initPx, int initPy) {
         super(INIT_VX, INIT_VY, initPx, initPy);
@@ -228,8 +225,8 @@ public class TA extends GameObj {
         return scatter;
     }
 
-    public static void scatter() {
-
+    public static void setScatter(boolean s) {
+        scatter = s; 
     }
 
     public boolean isDead() {

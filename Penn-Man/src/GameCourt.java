@@ -9,9 +9,7 @@ import java.awt.*;
 
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.*;
 
@@ -60,7 +58,7 @@ public class GameCourt extends JPanel {
     private static TA ta4 = new TA(2 * TILE_SIZE, 10 * TILE_SIZE);
     private static ArrayList<TA> staff = new ArrayList<TA>();
 
-    public static int P_SETS = 0;
+    private static int pSets = 0;
 
     private boolean playing = false; // whether the game is running
     private JLabel status; // Current status text, i.e. "Running..."
@@ -109,7 +107,6 @@ public class GameCourt extends JPanel {
             public void keyPressed(KeyEvent e) {
 
                 Direction keyPress = getDirFromKey(e);
-                System.out.println("key: " + keyPress);
 
                 if (keyPress == null) { // not pressing
                     return;
@@ -160,7 +157,7 @@ public class GameCourt extends JPanel {
     }
 
     private boolean won() {
-        return P_SETS == 0 || staff.size() == 0;
+        return pSets == 0 || staff.size() == 0;
     }
 
     private void newLife() {
@@ -194,11 +191,6 @@ public class GameCourt extends JPanel {
             t.setVy(0);
         }
         return oldSpeeds;
-    }
-
-    private void startMovement(int[] oldSpeeds) {
-        pennMan.setVx(oldSpeeds[0]);
-        pennMan.setVy(oldSpeeds[1]);
     }
 
     private void loseGame() {
@@ -278,7 +270,12 @@ public class GameCourt extends JPanel {
      * triggers.
      */
     void tick() {
+        System.out.println(staff.size());
         if (playing) {
+            if (won()) {
+                winGame();
+            }
+
             TA intersected = intersection();
 
             if (TA.isScatter()) {
@@ -301,10 +298,6 @@ public class GameCourt extends JPanel {
                     }
                 }
 
-            }
-
-            if (won()) {
-                winGame();
             }
 
             pennMan.move();
@@ -348,9 +341,7 @@ public class GameCourt extends JPanel {
                     drawWall(g, i, j);
                 } else if (MAZE[i / TILE_SIZE][j / TILE_SIZE] == 2) {
                     drawCoffee(g, i, j);
-                }
-
-                else {
+                } else {
                     g.setColor(Color.black);
                     g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
                 }
@@ -364,7 +355,7 @@ public class GameCourt extends JPanel {
         g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
         g.setColor(Color.WHITE);
         g.fillOval(j + (TILE_SIZE / 2), i + (TILE_SIZE / 2), 3, 3);
-        P_SETS += 1;
+        pSets += 1;
     }
 
     private static void drawWall(Graphics g, int i, int j) {

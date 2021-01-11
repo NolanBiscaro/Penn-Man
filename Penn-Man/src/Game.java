@@ -168,6 +168,12 @@ public class Game implements Runnable {
         menuPanel.add(leaderboardButton, BorderLayout.EAST);
         menuPanel.setBackground(Color.BLACK);
         menu.add(menuPanel, BorderLayout.SOUTH);
+        
+        JLabel title = new JLabel("PennMan."); 
+        title.setFont(new Font("Serif", Font.BOLD, 50));
+        title.setForeground(Color.RED);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        menu.add(title);
 
         // Put the frame on the screen
         frame.pack();

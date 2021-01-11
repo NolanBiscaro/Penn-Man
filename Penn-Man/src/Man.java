@@ -74,14 +74,13 @@ public class Man extends GameObj {
     protected void stopScatter() {
         this.setVx(this.getVx() / 2);
         this.setVy(this.getVy() / 2);
-        System.out.println("here");
         setBaseSpeed(2);
-        TA.scatter = false;
+        TA.setScatter(false);
         AudioController.decaffeinate();
     }
     
     public void checkStamina() {
-        if (!(TA.scatter)) {
+        if (!(TA.isScatter())) {
             return;
         } else {
             if (tired()) {
@@ -98,7 +97,7 @@ public class Man extends GameObj {
         this.setVx(this.getVx() * 2);
         this.setVy(this.getVy() * 2);
         scatterStart = System.currentTimeMillis();
-        TA.scatter = true;
+        TA.setScatter(true); 
         setBaseSpeed(4); 
     }
 
