@@ -22,6 +22,12 @@ public class ImageController {
     private static final String COFFEE_FILE = "files/images/coffee.png";
     private static final Image COFFEE = loadImage(COFFEE_FILE);
     
+    private static final String CAUGHT_FILE = "files/images/caughtTA.png"; 
+    private static final Image CAUGHT = loadImage(CAUGHT_FILE); 
+    
+    private static final String WIN_FILE = "files/images/winTA.png"; 
+    private static final Image WIN = loadImage(WIN_FILE); 
+    
     public static Image ta() {
         return TA;
     }
@@ -46,12 +52,20 @@ public class ImageController {
         return COFFEE; 
     }
     
+    public static Image caught() {
+        return CAUGHT; 
+    }
+    
+    public static Image win() {
+        return WIN; 
+    }
+    
     protected static Image loadImage(String file) { // icon representing gameObj.
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(file));
         } catch (IOException e) {
-            System.out.println("Error fetching Man image");
+            System.out.println("Error fetching image");
             e.printStackTrace();
         }
         return img;

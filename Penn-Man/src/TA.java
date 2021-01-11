@@ -50,11 +50,13 @@ public class TA extends GameObj {
     }
 
     public void drawExploding(Graphics g) {
+        int score = Man.getScore(); 
         if (dynamicSize <= 150) {
             g.drawImage(ImageController.explosion(), this.getPx(), this.getPy(), dynamicSize,
                     dynamicSize, null, null);
             dynamicSize += 6;
-            Man.setScore(Man.getScore() + 1);
+            Man.setScore(score + 1);
+            Game.updateScore(Man.getScore());
         } else {
             this.kill();
         }

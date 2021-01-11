@@ -27,36 +27,35 @@ import javax.swing.border.BevelBorder;
  */
 
 public class Game implements Runnable {
-
-    private static JLabel score = new JLabel();
-    private static JLabel lives = new JLabel();
+    
     private static String user = "";
     private static Map<String, Integer> records = new TreeMap<String, Integer>();
     private static final String FILENAME = "files/storedData";
     private boolean startGame = false;
     private boolean showLeaderboard = false;
-    public static final JFrame LB = new JFrame("Leaderboard");
+    private static JLabel score = new JLabel(); 
+    private static JLabel lives = new JLabel(); 
 
     public void run() {
 
         loadGame();
-
+        
         final JFrame frame = new JFrame("PENN-MAN");
         final JFrame menu = new JFrame("Main Menu");
+        final JFrame leaderboard = new JFrame("Leaderboard");
 
         frame.setLocation(500, 100);
+        frame.setSize(500, 100);
         frame.setResizable(false);
 
-        menu.setLocation(500, 100);
+        menu.setLocation(512, 100);
         menu.setResizable(false);
-        menu.setPreferredSize(new Dimension(512, 300));
+        menu.setPreferredSize(new Dimension(512, 512));
+        menu.getContentPane().setBackground(new Color(0, 0, 102));
 
         // menu layout
-        JPanel menuPanel = new JPanel();
-
-        LB.setLocation(500, 100);
-        LB.setResizable(false);
-        LB.setPreferredSize(new Dimension(512, 240));
+        JPanel menuPanel = new JPanel(new BorderLayout());
+        menuPanel.setSize(new Dimension(512, 100));
 
         // Status panel
         final JPanel status_panel = new JPanel();
@@ -70,34 +69,40 @@ public class Game implements Runnable {
 
         final JPanel lbScrollContainer = new JPanel();
         lbScrollContainer.setLayout(new BoxLayout(lbScrollContainer, BoxLayout.PAGE_AXIS));
+        lbScrollContainer.setBackground(Color.BLACK);
+        lbScrollContainer.setSize(new Dimension(512, 512));
         buildLeaderboard(lbScrollContainer);
 
         // Leaderboard
-        final JScrollPane leaderboard = new JScrollPane(lbScrollContainer);
+        final JScrollPane lb = new JScrollPane(lbScrollContainer);
 
-        leaderboard.setBackground(Color.black);
-        leaderboard.setPreferredSize(new Dimension(206, 206));
-        leaderboard.setBorder(
+        lb.setBackground(Color.black);
+        lb.setPreferredSize(new Dimension(512, 512));
+        lb.setBorder(
                 BorderFactory.createBevelBorder(BevelBorder.RAISED, 
                         Color.RED, Color.RED, Color.BLACK, Color.BLACK));
 
-        leaderboard.setVisible(true);
-        leaderboard.add(new JPanel());
-        LB.add(leaderboard, BorderLayout.CENTER);
+        lb.setVisible(true);
+        lb.add(new JPanel());
+        leaderboard.add(lb, BorderLayout.CENTER);
 
         // Scoreboard
-        final JPanel scoreboard = new JPanel();
+        final JPanel scoreboard = new JPanel(new GridLayout());
         scoreboard.setBackground(Color.BLACK);
         scoreboard.setBorder((BorderFactory.createLineBorder(Color.RED)));
 
         // score
         score = new JLabel("SCORE: 0", JLabel.LEFT);
-        score.setForeground(Color.WHITE);
+        score.setSize(100, 100);
+        score.setForeground(Color.RED);
+        score.setFont(new Font("Serif", Font.BOLD, 25));
         scoreboard.add(score);
 
         // lives
         lives = new JLabel("LIVES: 3", JLabel.RIGHT);
-        lives.setForeground(Color.WHITE);
+        lives.setSize(100, 100);
+        lives.setForeground(Color.RED);  
+        lives.setFont(new Font("Serif", Font.BOLD, 25));
         scoreboard.add(lives);
 
         scoreboard.setPreferredSize(new Dimension(50, 70));
@@ -105,15 +110,16 @@ public class Game implements Runnable {
         frame.add(scoreboard, BorderLayout.NORTH);
 
         final JButton newGameButton = new JButton("NEW GAME");
-        newGameButton.setPreferredSize(new Dimension(200, 100));
-        newGameButton.setForeground(Color.blue);
-        newGameButton.setBackground(Color.red);
+        newGameButton.setPreferredSize(new Dimension(256, 100));
+        newGameButton.setBackground(Color.BLACK);
+        newGameButton.setForeground(Color.WHITE);
+        newGameButton.setBorder(BorderFactory.createEtchedBorder(Color.RED, Color.RED));
         newGameButton.setOpaque(true);
         newGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 user = JOptionPane.showInputDialog("Please enter a username");
                 if (user != null) {
-                    user = user.replaceAll(" ", "");
+                    user = user.replaceAll(" ", "_");
                     court.reset();
                     frame.setVisible(true);
                 }
@@ -122,35 +128,38 @@ public class Game implements Runnable {
         });
 
         final JButton leaderboardButton = new JButton("LEADERBOARD");
-        leaderboardButton.setPreferredSize(new Dimension(200, 100));
-        leaderboardButton.setForeground(Color.blue);
-        leaderboardButton.setBackground(Color.RED);
+        leaderboardButton.setPreferredSize(new Dimension(256, 100));
+        leaderboardButton.setBackground(Color.BLACK);
+        leaderboardButton.setForeground(Color.WHITE);
+        leaderboardButton.setBorder(BorderFactory.createEtchedBorder(Color.RED, Color.RED));
         leaderboardButton.setOpaque(true);
         leaderboardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LB.setVisible(true);
+                leaderboard.setVisible(true);
             }
         });
 
         final JButton closeLeaderboardButton = new JButton("CLOSE");
-        closeLeaderboardButton.setPreferredSize(new Dimension(200, 100));
-        closeLeaderboardButton.setForeground(Color.RED);
+        closeLeaderboardButton.setPreferredSize(new Dimension(256, 100));
+        closeLeaderboardButton.setBackground(Color.BLACK);
+        closeLeaderboardButton.setForeground(Color.WHITE);
+        closeLeaderboardButton.setBorder(BorderFactory.createEtchedBorder(Color.RED, Color.RED));
         closeLeaderboardButton.setOpaque(true);
         closeLeaderboardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LB.setVisible(false);
+                leaderboard.setVisible(false);
             }
         });
 
         JPanel quitContainer = new JPanel();
+        quitContainer.setBackground(Color.BLACK);
         quitContainer.add(closeLeaderboardButton, BorderLayout.SOUTH);
-        LB.add(quitContainer, BorderLayout.SOUTH);
+        leaderboard.add(quitContainer, BorderLayout.SOUTH);
 
-        menuPanel.add(newGameButton, BorderLayout.SOUTH);
-        menuPanel.add(leaderboardButton, BorderLayout.PAGE_END);
-        menuPanel.setPreferredSize(new Dimension(512, 512));
+        menuPanel.add(newGameButton, BorderLayout.WEST);
+        menuPanel.add(leaderboardButton, BorderLayout.EAST);
         menuPanel.setBackground(Color.BLACK);
-        menu.add(menuPanel);
+        menu.add(menuPanel, BorderLayout.SOUTH);
 
         // Put the frame on the screen
         frame.pack();
@@ -163,9 +172,9 @@ public class Game implements Runnable {
         menu.setVisible(true);
 
         // put leaderboard on screen
-        LB.pack();
-        LB.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        LB.setVisible(showLeaderboard);
+        leaderboard.pack();
+        leaderboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        leaderboard.setVisible(showLeaderboard);
 
         // Start game
 
@@ -221,10 +230,10 @@ public class Game implements Runnable {
 
             JLabel record = new JLabel("Username: " + 
                     entry.getKey() + " Score: " + entry.getValue());
-            record.setForeground(Color.RED);
-            record.setBorder(BorderFactory.createDashedBorder(Color.RED));
-            record.setForeground(Color.black);
-            record.setPreferredSize(new Dimension(300, 200));
+            record.setForeground(Color.WHITE);
+            record.setBorder(BorderFactory.createLineBorder(Color.RED));
+            record.setBackground(Color.black);
+            record.setSize(new Dimension(300, 200));
             record.setVisible(true);
             record.setAlignmentX(JLabel.CENTER_ALIGNMENT);
             container.add(record);
@@ -235,12 +244,7 @@ public class Game implements Runnable {
     public static void addRecord() {
         records.put(user, Man.getScore());
     }
-
-    public static void showLb() {
-        LB.setVisible(true);
-
-    }
-    
+  
     public static void setUser(String u) {
         user = u; 
     }

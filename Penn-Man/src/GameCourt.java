@@ -60,7 +60,7 @@ public class GameCourt extends JPanel {
     private static TA ta4 = new TA(2 * TILE_SIZE, 10 * TILE_SIZE);
     private static ArrayList<TA> staff = new ArrayList<TA>();
 
-    public static final int MAX_SCORE = 141;
+    public static int P_SETS = 0;
 
     private boolean playing = false; // whether the game is running
     private JLabel status; // Current status text, i.e. "Running..."
@@ -160,7 +160,7 @@ public class GameCourt extends JPanel {
     }
 
     private boolean won() {
-        return Man.getScore() == MAX_SCORE;
+        return P_SETS == 0 || staff.size() == 0;
     }
 
     private void newLife() {
@@ -169,9 +169,14 @@ public class GameCourt extends JPanel {
     }
 
     private void showOptions() {
+        JOptionPane pane = new JOptionPane(); 
+        pane.setBackground(Color.BLACK);
+        pane.setForeground(Color.WHITE);
+        Icon caught = new ImageIcon(ImageController.caught()); 
+        pane.setIcon(caught);
         int answer = JOptionPane.showConfirmDialog(null,
-                "You were caught using stack overflow by the TA! "
-                        + "Do you wish to continue, or do your accept failure?");
+                "You were caught by the TA! "
+                        + "Do you wish to continue");
         if (answer == 0) {
             newLife();
         } else {
@@ -358,6 +363,7 @@ public class GameCourt extends JPanel {
         g.fillRect(j, i, TILE_SIZE, TILE_SIZE);
         g.setColor(Color.WHITE);
         g.fillOval(j + (TILE_SIZE / 2), i + (TILE_SIZE / 2), 3, 3);
+        P_SETS += 1; 
     }
 
     private static void drawWall(Graphics g, int i, int j) {
