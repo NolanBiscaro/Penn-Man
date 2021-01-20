@@ -1,6 +1,8 @@
 # Penn-Man
 CIS 120 final project
 
+biscaro@seas.upenn.edu //for all inquries
+
 This project was done as final project for CIS 120. 
 
 **Rules and Objectives**
