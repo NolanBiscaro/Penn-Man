@@ -67,6 +67,7 @@ simply returns the direction of the collision and is not involved in actually pr
 collision from happening. This is the restrict() functions job. 
 
 ![checking path right example](files/images/collision.png)
+
 In this example, GameObj is moving left to right, therefore we check the top left and top right corners for collision. 
 
 Upon collision, the restrict function "snaps" the user to the closest tile, and sets velocity of travel in direction of collision 
