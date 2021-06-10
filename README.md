@@ -4,10 +4,8 @@ Completed as a final project for CIS 120
 ![Menu Png](files/images/menu.png)
 
 ##### Table of Contents  
-[Headers](#headers)  
-[Emphasis](#emphasis)  
-...snip...    
-<a name="headers"/>
+[Description Header](#headers)   
+<a name="Description"/>
 ## Headers
 
 ## Description
