@@ -4,7 +4,7 @@ Completed as a final project for CIS 120
 ![Menu Png](files/images/menu.png)
 
 ## Table of Contents  
-[Description](#headers)   
+[Description](#description)   
 <a name="description"/>
 
 ## Description
