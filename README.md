@@ -1,23 +1,28 @@
 # PennMan
 
 Completed as a final project for CIS 120 
+![Menu Png](files/images/menu.png)
 
 ## Description
 
-PennMan is a game similar to Pacman but with a twist. Your main objective is to navigate the student through the maze, collecting all the problem sets (white dots) while avoiding the *evil* TA's. 
+PennMan is a game similar to Pacman but with a twist. Your main objective is to navigate the student through the maze, collecting all the problem sets (white dots) while avoiding the *evil* TA's. Collecting coffees speeds up movememnt and makes the TA's vulnerable, similar to the original Pacman. 
 
 ![Demo Gif](files/images/coffeeDemo.gif)
 
 
 ## Rules and Objectives
--Use arrow keys to move. 
--Collect all problem sets (white dots) or blow up all TA's to win. 
--Collecting coffees will enter scatter mode for 5 seconds. In scatter mode, game movement 
+Use arrow keys to move. 
+
+Collect all problem sets (white dots) or blow up all TA's to win. 
+
+Collecting coffees will enter scatter mode for 5 seconds. In scatter mode, game movement 
 speed is doubled, and collision with TA's causes them to explode. 
 
+If not in scatter mode, collision with TA's loses a life.
 
--If not in scatter mode, collision with TA's loses a life. 
--There are 3 lives total. 
+There are 3 lives total. 
+
+## Design
 
 The project consists of  7 classes and a Direction enumeration. 
 The enumeration stores 5 directions (UP, DOWN , LEFT, RIGHT, PARALLEL). 
@@ -25,8 +30,11 @@ The enumeration stores 5 directions (UP, DOWN , LEFT, RIGHT, PARALLEL).
 Audio and Image Controller simply handle loading and initializing the audio and video files used
 throughout the game. 
 
+### GameCourt
+
 The GameCourt class handles certain game mechanics such as conditions for winning, losing,
 drawing the maze, and animating character movement using a Timer and the tick() method. 
+
 **Method for drawing the maze is as follows: 
 -Create a 2d integer array denoting x,y positions in the game court. Current maze is 16x16. Place a 0 to
 denote a path and a 1 to denote a wall. A 2 denotes a coffee power-up. 
