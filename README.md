@@ -42,7 +42,7 @@ A 0 is placed to denote a path and a 1 to denote a wall. A 2 denotes a coffee po
 ![Maze path outline](files/images/mazeTrace.png)
 
 When drawing, we use a standard tile size of 32x32 pixels for each of the 16x16 tiles. Note that the
-dimensions of the game court are 512x512 pixels, and 32*16x32*16 = 512x512. This allows for each index
+dimensions of the game court are 512x512 pixels, and 32x16x32x16 = 512x512. This allows for each index
 in the 16x16 array correspond to 1 32x32 pixel tile drawn. This makes the drawing and modifying of
 mazes very intuitive, and allows for the possibility of creating/auto-generating new mazes.
 
