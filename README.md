@@ -46,7 +46,7 @@ dimensions of the game court are 512x512 pixels, and 32x16x32x16 = 512x512. This
 in the 16x16 array to correspond to a single 32x32 pixel tile drawn. This makes the drawing and modifying of
 mazes very intuitive, and allows for the possibility of creating/auto-generating new mazes.
 
-![Maze pixel mappings](files/images/mazeMapping.png)
+![Maze pixel mappings](files/images/mazeMap.png)
 
 Note: In order to translate from pixel coordinates to array indices, we can simply find Floor(pixel coordinate / tile size)
 
