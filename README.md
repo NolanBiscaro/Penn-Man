@@ -39,7 +39,7 @@ drawing the maze, and animating character movement using a Timer and the tick() 
 A 2D integer array was created denoting x,y positions in the game court. The current maze size is 16x16. 
 A 0 is placed to denote a path and a 1 to denote a wall. A 2 denotes a coffee power-up. 
 
-[!Maze path outline](files/images/mazeTrace.png)
+![Maze path outline](files/images/mazeTrace.png)
 
 When drawing, we use a standard tile size of 32x32 pixels for each of the 16x16 tiles. Note that the
 dimensions of the game court are 512x512 pixels, and 32*16x32*16 = 512x512. This allows for each index
@@ -55,7 +55,7 @@ game. There are currently two types of GameObj's. PennMan and the TA's.
 A majority of GameObj is devoted to defining methods to enable movement throughout the maze while
 respecting wall boundaries.
 
-Procedure for detecting wall collisions is as follows: 
+#### Procedure for detecting wall collisions
 
 We first switch on the current direction of travel, as we only need to check for a collision
 in that direction. Depending on the direction, we will check the corners of the 32x32 tile closest
@@ -71,7 +71,7 @@ in the gameObj class.
 Note: the SnapX function snaps the x-coordinate to the closest tile. it does this by taking the 
 current x-coordinates and finds the closest multiple of 32 (tile size). Similar for snapY. 
 
-Procedure for navigating PennMan is as follows: 
+#### Procedure for navigating PennMan 
 
 This is handled in the checkPath() method of the Man class. Every time a key is pressed we store it
 in the lastPressed Direction variable. We then check if there is currently a path in that 
@@ -80,7 +80,8 @@ way we can continuously check in that direction, and if a new key is not pressed
 path in that direction becomes available, we will take that path. This allows for lenience in the
 timing of the key press from the user when navigating through the maze, and makes it easier to move under pressure.
 
-Procedure for navigating TA is  as follows:
+#### Procedure for navigating TA
+
 This is slightly more complex as it must be done without any user input. 
 This is handled by the navigate function in TA. We first check if the TA is in scatter mode. If
 so, it is sufficient for the TA's take random paths throughout the maze. They uses the check path
@@ -91,6 +92,6 @@ which direction we need to travel in order to get closer to pennMan. If a path b
 in the correct direction, we take it, otherwise we continue searching. If a scenario arises where
 the TA has no direct path in horizontal OR vertical direction, chaser is switched off until a path
 in the relevant direction becomes available. In other words, the TA will wander randomly until a 
-path in the correct direction becomes available. 
+path in the correct direction becomes available.
 
 Enjoy!!!
