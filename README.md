@@ -83,6 +83,7 @@ path in that direction becomes available, we will take that path. This allows fo
 timing of the key press from the user when navigating through the maze, and makes it easier to move under pressure.
 
 ![checking path right example](files/images/collision.png)
+
 In this example, PennMan is moving left to right, therefore we check the top left and top right corners for collision. 
 
 #### Procedure for navigating TA
