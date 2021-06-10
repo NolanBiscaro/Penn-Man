@@ -5,7 +5,7 @@ Completed as a final project for CIS 120
 
 ## Description
 
-PennMan is a game similar to Pacman but with a twist. Your main objective is to navigate the student through the maze, collecting all the problem sets (white dots) while avoiding the *evil* TA's. Collecting coffees speeds up movememnt and makes the TA's vulnerable, similar to the original Pacman. 
+PennMan is a game similar to Pacman but with a twist. Your main objective is to navigate the student through the maze, collecting all the problem sets (white dots) while avoiding the *evil* TA's. Collecting coffees speeds up movement and makes the TA's vulnerable, similar to the original Pacman. 
 
 ![Demo Gif](files/images/coffeeDemo.gif)
 
@@ -27,8 +27,7 @@ There are 3 lives total.
 The project consists of  7 classes and a Direction enumeration. 
 The enumeration stores 5 directions (UP, DOWN , LEFT, RIGHT, PARALLEL). 
 
-Audio and Image Controller simply handle loading and initializing the audio and video files used
-throughout the game. 
+Audio and Image Controller simply handle loading and initializing the audio and video files used for sound effects and animation throughout the game. 
 
 ### GameCourt
 
