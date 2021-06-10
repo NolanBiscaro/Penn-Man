@@ -6,30 +6,16 @@ Completed as a final project for CIS 120
 
 PennMan is a game similar to Pacman but with a twist. Your main objective is to navigate the student through the maze, collecting all the problem sets (white dots) while avoiding the *evil* TA's. 
 
-Additonally, there are coffee cups placed throughout the maze. Collecting these will give a speed boost and make the TA's vulnerable, similar to the original Pacman. 
+![Demo Gif](files/images/coffeeDemo.gif)
 
 
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
-
-# Penn-Man
-CIS 120 final project
-
-biscaro@seas.upenn.edu //for all inquries
-
-This project was done as final project for CIS 120. 
-
-**Rules and Objectives**
+## Rules and Objectives
 -Use arrow keys to move. 
 -Collect all problem sets (white dots) or blow up all TA's to win. 
 -Collecting coffees will enter scatter mode for 5 seconds. In scatter mode, game movement 
 speed is doubled, and collision with TA's causes them to explode. 
+
+
 -If not in scatter mode, collision with TA's loses a life. 
 -There are 3 lives total. 
 
