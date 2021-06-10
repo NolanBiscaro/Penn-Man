@@ -3,6 +3,13 @@
 Completed as a final project for CIS 120 
 ![Menu Png](files/images/menu.png)
 
+##### Table of Contents  
+[Headers](#headers)  
+[Emphasis](#emphasis)  
+...snip...    
+<a name="headers"/>
+## Headers
+
 ## Description
 
 PennMan is a game similar to Pacman but with a twist. Your main objective is to navigate the student through the maze, collecting all the problem sets (white dots) while avoiding the *evil* TA's. Collecting coffees speeds up movement and makes the TA's vulnerable, similar to the original Pacman. 
