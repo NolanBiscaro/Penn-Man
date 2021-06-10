@@ -90,9 +90,9 @@ so, it is sufficient for the TA's take random paths throughout the maze. They us
 methods from GameObj to do this, but only take any path with probability 0.3. If they are 
 not in scatter mode, we  define them as "chasers". The goal is to constantly try and 
 minimize our distance from  man. We use the relativeX and relativeY methods to  determine in 
-which direction we need to travel in order to get closer to pennMan. These methods detemrine if the TA is currently
+which direction we need to travel in order to get closer to pennMan. These methods determine if the TA is currently
 above, below, left, or right of PennMan. If the vertical difference is larger, we search primarily for a vertical path, 
-and horizontal otherwise. If a path becomes availablein the correct direction, we take it, otherwise we continue searching. 
+and horizontal otherwise. If a path becomes available in the correct direction, we take it, otherwise we continue searching. 
 If a scenario arises wherethe TA has no direct path in horizontal OR vertical direction, chaser is switched off until a path
 in the relevant direction becomes available. In other words, the TA will wander randomly until a 
 path in the correct direction becomes available.
