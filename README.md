@@ -91,6 +91,6 @@ which direction we need to travel in order to get closer to pennMan. If a path b
 in the correct direction, we take it, otherwise we continue searching. If a scenario arises where
 the TA has no direct path in horizontal OR vertical direction, chaser is switched off until a path
 in the relevant direction becomes available. In other words, the TA will wander randomly until a 
-path in the correct direction becomes available. 
+path in the correct direction becomes available.
 
 Enjoy!!!
