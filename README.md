@@ -39,7 +39,7 @@ drawing the maze, and animating character movement using a Timer and the tick() 
 A 2D integer array was created denoting x,y positions in the game court. The current maze size is 16x16. 
 A 0 is placed to denote a path and a 1 to denote a wall. A 2 denotes a coffee power-up. 
 
-[!Maze path outline](files/images/mazeTrace.png)
+![Maze path outline](files/images/mazeTrace.png)
 
 When drawing, we use a standard tile size of 32x32 pixels for each of the 16x16 tiles. Note that the
 dimensions of the game court are 512x512 pixels, and 32*16x32*16 = 512x512. This allows for each index
