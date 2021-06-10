@@ -5,7 +5,7 @@ Completed as a final project for CIS 120
 
 ## Table of Contents  
 [Description](#description)   
-<a name="description"/>
+
 [Rules and Objectives](#rules and objectives)
 <a name="rules and objectives"/>
 [Design](#design)
