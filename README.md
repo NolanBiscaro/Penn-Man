@@ -66,6 +66,10 @@ topRight. If dirTravel is Right, check topRight and bottomRight, etc.). The coll
 simply returns the direction of the collision and is not involved in actually preventing the 
 collision from happening. This is the restrict() functions job. 
 
+![checking path right example](files/images/collision.png)
+
+In this example, GameObj is moving left to right, therefore we check the top left and top right corners for collision. 
+
 Upon collision, the restrict function "snaps" the user to the closest tile, and sets velocity of travel in direction of collision 
 to zero. How this is handled depends on the type of GameObj, so this is as specific as it gets
 in the gameObj class. 
@@ -82,9 +86,6 @@ way we can continuously check in that direction, and if a new key is not pressed
 path in that direction becomes available, we will take that path. This allows for lenience in the
 timing of the key press from the user when navigating through the maze, and makes it easier to move under pressure.
 
-![checking path right example](files/images/collision.png)
-
-In this example, PennMan is moving left to right, therefore we check the top left and top right corners for collision. 
 
 #### Procedure for navigating TA
 
