@@ -11,7 +11,6 @@ Completed as a final project for CIS 120
 
 
 [Design](#design)
-<a name="design"/>
   * [GameCourt](#gamecourt)
     + [Procedure for Drawing Maze](#procedure-for-drawing-the-maze)
   * [GameObj](#gameobj)
