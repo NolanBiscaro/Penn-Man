@@ -12,7 +12,7 @@ Completed as a final project for CIS 120
 
 [Design](#design)
 <a name="design"/>
-* [GameCourt](## gamecourt)
+* [GameCourt](#gamecourt)
 <a name="gamecourt"/>
 
 ## Description
