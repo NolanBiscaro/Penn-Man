@@ -13,7 +13,6 @@ Completed as a final project for CIS 120
 [Design](#design)
 <a name="design"/>
 * [GameCourt](#gamecourt)
-<a name="gamecourt"/>
   + [Procedure for Drawing Maze](#procedure-for-drawing-the-maze)
 * [GameObj](#gameobj)
 + [Procedure for drawing PennMan](#procedure-for-drawing-pennman)
