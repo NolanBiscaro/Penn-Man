@@ -14,7 +14,7 @@ Completed as a final project for CIS 120
 <a name="design"/>
 
 
-[GameCourt](##gamecourt)
+[GameCourt](#gamecourt)
 <a name="gamecourt"/>
 
 ## Description
