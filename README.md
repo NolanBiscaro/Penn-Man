@@ -15,7 +15,7 @@ Completed as a final project for CIS 120
 * [GameCourt](#gamecourt)
   + [Procedure for Drawing Maze](#procedure-for-drawing-the-maze)
 * [GameObj](#gameobj)
-+ [Procedure for Detecting Wall Collisions](#procedure-for-detectign wall collisions)
++ [Procedure for Detecting Wall Collisions](#procedure-for-detecting wall collisions)
 + [Procedure for Navigating PennMan](#procedure-for-navigating-pennman)
 + [Procedure for Navigating TA](#procedure-for-navigating-TA)
 
