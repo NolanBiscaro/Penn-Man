@@ -8,8 +8,12 @@ Completed as a final project for CIS 120
 
 [Rules and Objectives](#rules-and-objectives)
 <a name="rules-and=objectives"/>
+
+
 [Design](#design)
 <a name="design"/>
+
+
 [GameCourt](##gamecourt)
 <a name="gamecourt"/>
 
